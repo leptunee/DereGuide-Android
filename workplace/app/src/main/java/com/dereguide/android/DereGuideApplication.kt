@@ -4,8 +4,6 @@ import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Build
-import androidx.work.Configuration
-import androidx.work.WorkManager
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
@@ -14,12 +12,9 @@ class DereGuideApplication : Application() {
     companion object {
         const val BIRTHDAY_CHANNEL_ID = "birthday_reminders"
         const val BIRTHDAY_CHANNEL_NAME = "Birthday Reminders"
-    }
-
-    override fun onCreate() {
+    }    override fun onCreate() {
         super.onCreate()
         createNotificationChannels()
-        initializeWorkManager()
     }
 
     private fun createNotificationChannels() {
@@ -34,17 +29,7 @@ class DereGuideApplication : Application() {
             ).apply {
                 description = "Notifications for idol birthdays"
             }
-            
-            notificationManager.createNotificationChannel(birthdayChannel)
+              notificationManager.createNotificationChannel(birthdayChannel)
         }
-    }
-
-    private fun initializeWorkManager() {
-        WorkManager.initialize(
-            this,
-            Configuration.Builder()
-                .setMinimumLoggingLevel(android.util.Log.INFO)
-                .build()
-        )
     }
 }

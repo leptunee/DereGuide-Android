@@ -66,12 +66,14 @@ fun SongListScreen(
                 ) {
                     CircularProgressIndicator()
                 }
-            }
-            uiState.error != null -> {
-                ErrorMessage(
-                    message = uiState.error,
-                    onRetry = viewModel::loadSongs
-                )
+            }            uiState.error != null -> {
+                val errorMessage = uiState.error
+                if (errorMessage != null) {
+                    ErrorMessage(
+                        message = errorMessage,
+                        onRetry = viewModel::loadSongs
+                    )
+                }
             }
             else -> {
                 LazyColumn(
@@ -141,12 +143,14 @@ fun CharacterListScreen(
                 ) {
                     CircularProgressIndicator()
                 }
-            }
-            uiState.error != null -> {
-                ErrorMessage(
-                    message = uiState.error,
-                    onRetry = viewModel::loadCharacters
-                )
+            }            uiState.error != null -> {
+                val errorMessage = uiState.error
+                if (errorMessage != null) {
+                    ErrorMessage(
+                        message = errorMessage,
+                        onRetry = viewModel::loadCharacters
+                    )
+                }
             }
             else -> {
                 LazyColumn(
@@ -168,6 +172,7 @@ fun CharacterListScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SongFilterSection(
     selectedAttribute: String?,
@@ -237,6 +242,7 @@ private fun SongFilterSection(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun CharacterFilterSection(
     selectedAttribute: String?,

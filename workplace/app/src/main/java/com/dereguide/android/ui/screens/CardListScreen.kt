@@ -64,12 +64,14 @@ fun CardListScreen(
                 ) {
                     CircularProgressIndicator()
                 }
-            }
-            uiState.error != null -> {
-                ErrorMessage(
-                    message = uiState.error,
-                    onRetry = viewModel::loadCards
-                )
+            }            uiState.error != null -> {
+                val errorMessage = uiState.error
+                if (errorMessage != null) {
+                    ErrorMessage(
+                        message = errorMessage,
+                        onRetry = viewModel::loadCards
+                    )
+                }
             }
             else -> {
                 LazyColumn(
@@ -90,6 +92,7 @@ fun CardListScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun FilterSection(
     selectedAttribute: String?,
