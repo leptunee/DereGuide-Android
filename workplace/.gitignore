@@ -112,6 +112,7 @@ Thumbs.db
 # Keep gradle-wrapper.jar for build reproducibility
 # gradle/wrapper/gradle-wrapper.jar
 # gradle/wrapper/gradle-wrapper.properties
+gradle/wrapper/gradle-dist.zip
 
 # Signing files
 release.jks
