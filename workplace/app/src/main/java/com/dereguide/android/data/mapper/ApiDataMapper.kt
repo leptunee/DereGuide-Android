@@ -23,14 +23,13 @@ object ApiDataMapper {
             maxLevel2 = apiCard.rarityDep.baseMaxLevel + apiCard.rarityDep.addMaxLevel,
             vocal = apiCard.vocalMin,
             dance = apiCard.danceMin,
-            visual = apiCard.visualMin,
-            vocal2 = apiCard.vocalMax,
+            visual = apiCard.visualMin,            vocal2 = apiCard.vocalMax,
             dance2 = apiCard.danceMax,
             visual2 = apiCard.visualMax,
-            imageUrl = null, // 需要从详情API获取
-            cardImageUrl = null,
-            spreImageUrl = null,
-            iconImageUrl = null,
+            imageUrl = buildCardImageUrl(apiCard.id), // 卡片图片
+            cardImageUrl = buildCardImageUrl(apiCard.id),
+            spreImageUrl = if (apiCard.hasSpread) buildCardImageUrl(apiCard.id) else null,
+            iconImageUrl = buildIconImageUrl(apiCard.id), // 图标图片
             releaseDate = null,
             evolutionId = apiCard.evolutionId,
             hasSpread = apiCard.hasSpread,
@@ -124,8 +123,7 @@ object ApiDataMapper {
             else -> "cute"
         }
     }
-    
-    private fun mapBloodTypeIdToString(bloodTypeId: Int): String {
+      private fun mapBloodTypeIdToString(bloodTypeId: Int): String {
         return when (bloodTypeId) {
             2001 -> "A"
             2002 -> "B"
@@ -133,5 +131,19 @@ object ApiDataMapper {
             2004 -> "O"
             else -> "O"
         }
+    }
+      /**
+     * 构建 Starlight API 的卡片图片URL
+     * 基于实际API响应的URL格式
+     */
+    private fun buildCardImageUrl(cardId: Int): String {
+        return "https://hidamarirhodonite.kirara.ca/card/$cardId.png"
+    }
+    
+    /**
+     * 构建 Starlight API 的图标图片URL
+     */
+    private fun buildIconImageUrl(cardId: Int): String {
+        return "https://hidamarirhodonite.kirara.ca/icon_card/$cardId.png"
     }
 }
