@@ -94,8 +94,7 @@ fun CardListScreen(
             else -> {
                 LazyColumn(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    items(uiState.cards) { card ->
+                ) {                    items(uiState.cards) { card ->
                         CardItem(
                             card = card,
                             onClick = { 

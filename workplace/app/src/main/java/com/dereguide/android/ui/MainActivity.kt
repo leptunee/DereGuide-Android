@@ -14,6 +14,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.dereguide.android.R
 import com.dereguide.android.ui.screens.CardListScreen
+import com.dereguide.android.ui.screens.CardDetailScreen
 import com.dereguide.android.ui.theme.DereGuideTheme
 import com.dereguide.android.debug.NetworkTestUtil
 import dagger.hilt.android.AndroidEntryPoint
@@ -52,14 +53,20 @@ fun DereGuideApp() {
                 title = { Text("DereGuide") }
             )
         }
-    ) { innerPadding ->
-        NavHost(
+    ) { innerPadding ->        NavHost(
             navController = navController,
             startDestination = "cards",
             modifier = Modifier.padding(innerPadding)
         ) {
             composable("cards") { 
                 CardListScreen(navController = navController)
+            }
+            composable("card_detail/{cardId}") { backStackEntry ->
+                val cardId = backStackEntry.arguments?.getString("cardId")?.toIntOrNull() ?: 0
+                CardDetailScreen(
+                    navController = navController,
+                    cardId = cardId
+                )
             }
         }
     }
