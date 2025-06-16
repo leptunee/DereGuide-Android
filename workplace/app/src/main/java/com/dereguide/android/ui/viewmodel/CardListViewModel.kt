@@ -5,10 +5,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dereguide.android.data.model.Card
 import com.dereguide.android.data.repository.CardRepository
+import com.dereguide.android.ui.components.SortOrder
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
+@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
 
 @HiltViewModel
 class CardListViewModel @Inject constructor(
@@ -25,7 +28,10 @@ class CardListViewModel @Inject constructor(
     private val _searchQuery = MutableStateFlow("")
     private val _selectedAttribute = MutableStateFlow<String?>(null)
     private val _selectedRarity = MutableStateFlow<Int?>(null)
-      init {
+    private val _sortOrder = MutableStateFlow(SortOrder.DEFAULT)
+    private val _showFavoritesOnly = MutableStateFlow(false)
+      
+    init {
         Log.d(TAG, "CardListViewModel initialized")
         loadCards()
         observeFilters()
@@ -36,40 +42,68 @@ class CardListViewModel @Inject constructor(
             _searchQuery,
             _selectedAttribute,
             _selectedRarity,
-            cardRepository.getAllCards()
-        ) { query, attribute, rarity, allCards ->
-            var filteredCards = allCards
-            
-            // Apply search filter
-            if (query.isNotBlank()) {
-                filteredCards = filteredCards.filter { card ->
-                    card.name.contains(query, ignoreCase = true)
-                }
+            _sortOrder,
+            _showFavoritesOnly
+        ) { query, attribute, rarity, sortOrder, favoritesOnly ->
+            CardFilterParams(query, attribute, rarity, sortOrder, favoritesOnly)
+        }.flatMapLatest { params ->
+            val cardsFlow = if (params.favoritesOnly) {
+                cardRepository.getFavoriteCards()
+            } else {
+                cardRepository.getAllCards()
             }
             
-            // Apply attribute filter
-            if (attribute != null) {
-                filteredCards = filteredCards.filter { card ->
-                    card.attribute == attribute
+            cardsFlow.map { allCards ->
+                var filteredCards = allCards
+                
+                // Apply search filter
+                if (params.query.isNotBlank()) {
+                    filteredCards = filteredCards.filter { card ->
+                        card.name.contains(params.query, ignoreCase = true)
+                    }
                 }
-            }
-            
-            // Apply rarity filter
-            if (rarity != null) {
-                filteredCards = filteredCards.filter { card ->
-                    card.rarity == rarity
+                
+                // Apply attribute filter
+                params.attribute?.let { attr ->
+                    filteredCards = filteredCards.filter { card ->
+                        card.attribute == attr
+                    }
                 }
+                
+                // Apply rarity filter
+                params.rarity?.let { rar ->
+                    filteredCards = filteredCards.filter { card ->
+                        card.rarity == rar
+                    }
+                }
+                
+                // Apply sorting
+                filteredCards = when (params.sortOrder) {
+                    SortOrder.DEFAULT -> filteredCards.sortedByDescending { it.id }
+                    SortOrder.TOTAL_STATS_DESC -> filteredCards.sortedByDescending { it.maxTotalStats }
+                    SortOrder.TOTAL_STATS_ASC -> filteredCards.sortedBy { it.maxTotalStats }
+                    SortOrder.VOCAL_DESC -> filteredCards.sortedByDescending { it.vocal2 ?: it.vocal }
+                    SortOrder.DANCE_DESC -> filteredCards.sortedByDescending { it.dance2 ?: it.dance }
+                    SortOrder.VISUAL_DESC -> filteredCards.sortedByDescending { it.visual2 ?: it.visual }
+                    SortOrder.RARITY_DESC -> filteredCards.sortedByDescending { it.rarity }
+                    SortOrder.RARITY_ASC -> filteredCards.sortedBy { it.rarity }
+                    SortOrder.NAME_ASC -> filteredCards.sortedBy { it.name }
+                    SortOrder.RELEASE_DATE_DESC -> filteredCards.sortedByDescending { it.releaseDate ?: "" }
+                }
+                
+                FilteredCardsResult(filteredCards, params)
             }
-            
-            filteredCards        }.onEach { cards ->
-            Log.d(TAG, "Cards filtered: ${cards.size} cards")
+        }.onEach { result ->
+            Log.d(TAG, "Cards filtered: ${result.cards.size} cards")
             _uiState.update { currentState ->
                 currentState.copy(
-                    cards = cards,
+                    cards = result.cards,
                     isLoading = false,
                     error = null,
-                    selectedAttribute = _selectedAttribute.value,
-                    selectedRarity = _selectedRarity.value
+                    selectedAttribute = result.params.attribute,
+                    selectedRarity = result.params.rarity,
+                    sortOrder = result.params.sortOrder,
+                    showFavoritesOnly = result.params.favoritesOnly
                 )
             }
         }.catch { exception ->
@@ -81,7 +115,9 @@ class CardListViewModel @Inject constructor(
                 ) 
             }
         }.launchIn(viewModelScope)
-    }    fun loadCards() {
+    }
+
+    fun loadCards() {
         Log.d(TAG, "Loading cards...")
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, error = null) }
@@ -131,6 +167,32 @@ class CardListViewModel @Inject constructor(
     fun filterByRarity(rarity: Int?) {
         _selectedRarity.value = rarity
     }
+    
+    fun setSortOrder(sortOrder: SortOrder) {
+        _sortOrder.value = sortOrder
+    }
+    
+    fun setShowFavoritesOnly(showFavoritesOnly: Boolean) {
+        _showFavoritesOnly.value = showFavoritesOnly
+    }
+    
+    fun clearFilters() {
+        _selectedAttribute.value = null
+        _selectedRarity.value = null
+        _sortOrder.value = SortOrder.DEFAULT
+        _showFavoritesOnly.value = false
+        _searchQuery.value = ""
+    }
+    
+    fun toggleFavorite(cardId: Int) {
+        viewModelScope.launch {
+            try {
+                cardRepository.toggleFavorite(cardId)
+            } catch (e: Exception) {
+                Log.e(TAG, "Error toggling favorite", e)
+            }
+        }
+    }
 }
 
 data class CardListUiState(
@@ -138,5 +200,20 @@ data class CardListUiState(
     val isLoading: Boolean = false,
     val error: String? = null,
     val selectedAttribute: String? = null,
-    val selectedRarity: Int? = null
+    val selectedRarity: Int? = null,
+    val sortOrder: SortOrder = SortOrder.DEFAULT,
+    val showFavoritesOnly: Boolean = false
+)
+
+private data class CardFilterParams(
+    val query: String,
+    val attribute: String?,
+    val rarity: Int?,
+    val sortOrder: SortOrder,
+    val favoritesOnly: Boolean
+)
+
+private data class FilteredCardsResult(
+    val cards: List<Card>,
+    val params: CardFilterParams
 )

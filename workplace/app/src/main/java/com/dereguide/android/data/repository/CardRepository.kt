@@ -113,7 +113,23 @@ class CardRepository @Inject constructor(
             Log.e(TAG, "强制刷新时出错", e)
             Result.failure(e)
         }
+    }    // 新增收藏功能
+    fun getFavoriteCards(): Flow<List<Card>> = cardDao.getFavoriteCards()
+    
+    suspend fun toggleFavorite(cardId: Int) {
+        val card = cardDao.getCardById(cardId)
+        card?.let {
+            cardDao.updateFavoriteStatus(cardId, !it.isFavorite)
+        }
     }
+    
+    // 新增排序功能
+    suspend fun getCardsSortedByStats(): List<Card> = cardDao.getCardsByTotalStats()
+    
+    suspend fun getCardsBySkillType(skillType: String): List<Card> = cardDao.getCardsBySkillType(skillType)
+    
+    suspend fun getCardsByRarityAndAttribute(rarity: Int, attribute: String): List<Card> = 
+        cardDao.getCardsByRarityAndAttribute(rarity, attribute)
 
     suspend fun insertCard(card: Card) {
         cardDao.insertCard(card)

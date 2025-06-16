@@ -25,6 +25,22 @@ interface CardDao {
     @Query("SELECT * FROM cards WHERE name LIKE '%' || :query || '%'")
     suspend fun searchCards(query: String): List<Card>
     
+    // 新增查询方法
+    @Query("SELECT * FROM cards WHERE isFavorite = 1 ORDER BY id DESC")
+    fun getFavoriteCards(): Flow<List<Card>>
+    
+    @Query("SELECT * FROM cards WHERE skillType = :skillType")
+    suspend fun getCardsBySkillType(skillType: String): List<Card>
+    
+    @Query("SELECT * FROM cards ORDER BY totalStats DESC")
+    suspend fun getCardsByTotalStats(): List<Card>
+    
+    @Query("SELECT * FROM cards WHERE rarity = :rarity AND attribute = :attribute")
+    suspend fun getCardsByRarityAndAttribute(rarity: Int, attribute: String): List<Card>
+    
+    @Query("UPDATE cards SET isFavorite = :isFavorite WHERE id = :cardId")
+    suspend fun updateFavoriteStatus(cardId: Int, isFavorite: Boolean)
+    
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCards(cards: List<Card>)
     

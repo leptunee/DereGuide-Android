@@ -5,6 +5,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -31,13 +33,25 @@ fun CardDetailScreen(
         viewModel.loadCard(cardId)
     }
     
-    Scaffold(
-        topBar = {
+    Scaffold(        topBar = {
             TopAppBar(
                 title = { Text(uiState.card?.name ?: "卡片详情") },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "返回")
+                    }
+                },
+                actions = {
+                    uiState.card?.let { card ->
+                        IconButton(
+                            onClick = { viewModel.toggleFavorite(card.id) }
+                        ) {
+                            Icon(
+                                imageVector = if (card.isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                                contentDescription = if (card.isFavorite) "取消收藏" else "收藏",
+                                tint = if (card.isFavorite) androidx.compose.ui.graphics.Color.Red else LocalContentColor.current
+                            )
+                        }
                     }
                 }
             )
@@ -171,8 +185,7 @@ private fun CardDetailContent(
             Column(
                 modifier = Modifier.padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                Text(
+            ) {                Text(
                     text = "属性值",
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold
@@ -183,8 +196,62 @@ private fun CardDetailContent(
                 val baseTotal = card.vocal + card.dance + card.visual
                 val maxTotal = (card.vocal2 ?: card.vocal) + (card.dance2 ?: card.dance) + (card.visual2 ?: card.visual)
                 InfoRow("总和", "$baseTotal → $maxTotal")
+                
+                // 显示属性分布
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = "属性分布",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
+                
+                val maxStat = maxOf(card.vocal2 ?: card.vocal, card.dance2 ?: card.dance, card.visual2 ?: card.visual)
+                StatBar("Vocal", card.vocal2 ?: card.vocal, maxStat)
+                StatBar("Dance", card.dance2 ?: card.dance, maxStat)
+                StatBar("Visual", card.visual2 ?: card.visual, maxStat)
             }
         }
+    }
+}
+
+@Composable
+private fun StatBar(
+    label: String,
+    value: Int,
+    maxValue: Int,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier.fillMaxWidth()
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = label,
+                style = MaterialTheme.typography.bodySmall
+            )
+            Text(
+                text = value.toString(),
+                style = MaterialTheme.typography.bodySmall,
+                fontWeight = FontWeight.Bold
+            )
+        }
+        Spacer(modifier = Modifier.height(4.dp))
+        LinearProgressIndicator(
+            progress = if (maxValue > 0) value.toFloat() / maxValue.toFloat() else 0f,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(8.dp),
+            color = when (label) {
+                "Vocal" -> MaterialTheme.colorScheme.primary
+                "Dance" -> MaterialTheme.colorScheme.secondary
+                "Visual" -> MaterialTheme.colorScheme.tertiary
+                else -> MaterialTheme.colorScheme.primary
+            }
+        )
+        Spacer(modifier = Modifier.height(8.dp))
     }
 }
 

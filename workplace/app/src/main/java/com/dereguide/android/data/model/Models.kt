@@ -33,8 +33,16 @@ data class Card(
     val releaseDate: String?,
     val evolutionId: Int?,
     val hasSpread: Boolean = false,
-    val hasSign: Boolean = false
-) : Parcelable
+    val hasSign: Boolean = false,
+    val isFavorite: Boolean = false, // 新增收藏字段
+    val skillType: String? = null, // 新增技能类型字段
+    val totalStats: Int = vocal + dance + visual, // 新增总属性值字段
+    val totalStats2: Int? = null // 新增觉醒后总属性值字段
+) : Parcelable {
+    // 计算觉醒后总属性值
+    val maxTotalStats: Int
+        get() = (vocal2 ?: vocal) + (dance2 ?: dance) + (visual2 ?: visual)
+}
 
 @Parcelize
 @Entity(tableName = "characters")

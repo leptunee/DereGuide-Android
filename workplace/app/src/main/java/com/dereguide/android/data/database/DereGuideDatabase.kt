@@ -16,7 +16,7 @@ import com.dereguide.android.data.model.*
         Team::class,
         GachaPool::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
