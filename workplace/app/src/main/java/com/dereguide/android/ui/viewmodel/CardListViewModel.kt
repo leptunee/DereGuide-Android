@@ -1,5 +1,6 @@
 package com.dereguide.android.ui.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dereguide.android.data.model.Card
@@ -14,14 +15,18 @@ class CardListViewModel @Inject constructor(
     private val cardRepository: CardRepository
 ) : ViewModel() {
     
+    companion object {
+        private const val TAG = "CardListViewModel"
+    }
+    
     private val _uiState = MutableStateFlow(CardListUiState())
     val uiState: StateFlow<CardListUiState> = _uiState.asStateFlow()
     
     private val _searchQuery = MutableStateFlow("")
     private val _selectedAttribute = MutableStateFlow<String?>(null)
     private val _selectedRarity = MutableStateFlow<Int?>(null)
-    
-    init {
+      init {
+        Log.d(TAG, "CardListViewModel initialized")
         loadCards()
         observeFilters()
     }
@@ -56,8 +61,8 @@ class CardListViewModel @Inject constructor(
                 }
             }
             
-            filteredCards
-        }.onEach { cards ->
+            filteredCards        }.onEach { cards ->
+            Log.d(TAG, "Cards filtered: ${cards.size} cards")
             _uiState.update { currentState ->
                 currentState.copy(
                     cards = cards,
@@ -67,15 +72,44 @@ class CardListViewModel @Inject constructor(
                     selectedRarity = _selectedRarity.value
                 )
             }
+        }.catch { exception ->
+            Log.e(TAG, "Error in observeFilters", exception)
+            _uiState.update { 
+                it.copy(
+                    isLoading = false, 
+                    error = exception.message ?: "Unknown error occurred"
+                ) 
+            }
         }.launchIn(viewModelScope)
-    }
-    
-    fun loadCards() {
+    }    fun loadCards() {
+        Log.d(TAG, "Loading cards...")
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, error = null) }
             try {
-                cardRepository.refreshCardsIfEmpty()
+                // Force refresh to get API data
+                cardRepository.forceRefreshCards()
+                Log.d(TAG, "Cards loaded successfully")
             } catch (e: Exception) {
+                Log.e(TAG, "Error loading cards", e)
+                _uiState.update { 
+                    it.copy(
+                        isLoading = false, 
+                        error = e.message ?: "Unknown error occurred"
+                    ) 
+                }
+            }
+        }
+    }
+
+    fun refreshCards() {
+        Log.d(TAG, "Refreshing cards...")
+        viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true, error = null) }
+            try {
+                cardRepository.forceRefreshCards()
+                Log.d(TAG, "Cards refreshed successfully")
+            } catch (e: Exception) {
+                Log.e(TAG, "Error refreshing cards", e)
                 _uiState.update { 
                     it.copy(
                         isLoading = false, 

@@ -3,6 +3,8 @@ package com.dereguide.android.ui.screens
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -21,8 +23,7 @@ import com.dereguide.android.ui.viewmodel.CardListViewModel
 fun CardListScreen(
     navController: NavController,
     viewModel: CardListViewModel = hiltViewModel()
-) {
-    val uiState by viewModel.uiState.collectAsState()
+) {    val uiState by viewModel.uiState.collectAsState()
     var searchQuery by remember { mutableStateOf("") }
     var showFilters by remember { mutableStateOf(false) }
 
@@ -31,16 +32,33 @@ fun CardListScreen(
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        // Search bar
-        SearchBar(
-            query = searchQuery,
-            onQueryChange = { 
-                searchQuery = it
-                viewModel.searchCards(it)
-            },
-            onFilterClick = { showFilters = !showFilters },
-            placeholder = stringResource(R.string.search_cards)
-        )
+        // Search bar with refresh button
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            SearchBar(
+                query = searchQuery,
+                onQueryChange = { 
+                    searchQuery = it
+                    viewModel.searchCards(it)
+                },
+                onFilterClick = { showFilters = !showFilters },
+                placeholder = stringResource(R.string.search_cards),
+                modifier = Modifier.weight(1f)
+            )
+            
+            IconButton(
+                onClick = { viewModel.refreshCards() },
+                enabled = !uiState.isLoading
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Refresh,
+                    contentDescription = "刷新卡片数据"
+                )
+            }
+        }
         
         Spacer(modifier = Modifier.height(16.dp))
         

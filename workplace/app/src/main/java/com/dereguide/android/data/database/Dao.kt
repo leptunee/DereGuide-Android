@@ -33,9 +33,11 @@ interface CardDao {
     
     @Update
     suspend fun updateCard(card: Card)
-    
-    @Delete
+      @Delete
     suspend fun deleteCard(card: Card)
+    
+    @Query("DELETE FROM cards")
+    suspend fun deleteAllCards()
 }
 
 @Dao

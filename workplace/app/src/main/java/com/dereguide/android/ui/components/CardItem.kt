@@ -37,16 +37,31 @@ fun CardItem(
                 .fillMaxWidth()
                 .padding(12.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            // Card image
-            AsyncImage(
-                model = card.iconImageUrl,
-                contentDescription = card.name,
+        ) {            // Card image
+            Box(
                 modifier = Modifier
                     .size(64.dp)
-                    .clip(RoundedCornerShape(8.dp)),
-                contentScale = ContentScale.Crop
-            )
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(getAttributeColor(card.attribute)),
+                contentAlignment = Alignment.Center
+            ) {
+                if (card.iconImageUrl != null) {
+                    AsyncImage(
+                        model = card.iconImageUrl,
+                        contentDescription = card.name,
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Crop
+                    )
+                } else {
+                    // Show character name as placeholder
+                    Text(
+                        text = card.name.take(2),
+                        color = Color.White,
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
             
             // Card info
             Column(

@@ -18,7 +18,9 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
     
-    private const val BASE_URL = "https://api.deresute.me/v1/"
+    // Starlight API - 已验证可用的数据源
+    private const val BASE_URL = "https://starlight.kirara.ca/api/v1/"
+    private const val IMAGE_BASE_URL = "https://hidamarirhodonite.kirara.ca/"
     
     @Provides
     @Singleton
