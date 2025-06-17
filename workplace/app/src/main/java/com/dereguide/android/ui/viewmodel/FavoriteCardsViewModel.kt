@@ -42,7 +42,7 @@ class FavoriteCardsViewModel @Inject constructor(
                         ) 
                     }
                 }
-                .collect { favoriteCards ->
+                .collect { favoriteCards: List<Card> ->
                     Log.d(TAG, "Favorite cards loaded: ${favoriteCards.size} cards")
                     _uiState.update { 
                         it.copy(

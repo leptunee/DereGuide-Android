@@ -133,7 +133,7 @@ object SampleDataProvider {
             
             // 为每个偶像生成2-4张不同稀有度的卡片
             val cardCount = (2..4).random()
-            repeat(cardCount) { cardIndex ->
+            repeat(cardCount) { _ ->
                 val rarity = listOf(2, 3, 4, 5).random()
                 val attribute = attributes.random()
                 val skillType = skillTypes.random()
@@ -271,11 +271,34 @@ object SampleDataProvider {
         
         return "${targetAttribute}属性のアイドルの全パラメータが${percentage}%アップ"
     }
-    
-    private fun generateReleaseDate(cardId: Int): String {
+      private fun generateReleaseDate(cardId: Int): String {
         val baseYear = 2023
         val month = (cardId % 12) + 1
         val day = (cardId % 28) + 1
         return String.format("%d-%02d-%02d", baseYear, month, day)
+    }
+    
+    // 为CardRepository添加参数化的生成方法
+    fun generateSampleCards(count: Int): List<Card> {
+        val allCards = getSampleCards()
+        return if (count <= allCards.size) {
+            allCards.take(count)
+        } else {
+            // 如果需要的数量比现有卡片多，重复一些卡片
+            val repeated = mutableListOf<Card>()
+            var currentId = allCards.size + 1
+            
+            repeat(count - allCards.size) { index ->
+                val baseCard = allCards[index % allCards.size]
+                repeated.add(
+                    baseCard.copy(
+                        id = currentId++,
+                        name = "${baseCard.name} (Extra ${index + 1})"
+                    )
+                )
+            }
+            
+            allCards + repeated
+        }
     }
 }

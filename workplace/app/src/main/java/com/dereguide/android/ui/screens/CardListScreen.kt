@@ -116,17 +116,9 @@ fun CardListScreen(
             }
             Spacer(modifier = Modifier.height(8.dp))
         }
-        
-        // Cards list
+          // Cards list with optimized loading experience
         when {
-            uiState.isLoading -> {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator()
-                }
-            }            uiState.error != null -> {
+            uiState.error != null -> {
                 val errorMessage = uiState.error
                 if (errorMessage != null) {
                     ErrorMessage(
@@ -134,32 +126,51 @@ fun CardListScreen(
                         onRetry = viewModel::loadCards
                     )
                 }
-            }            else -> {
-                if (isGridView) {
-                    CardGrid(
-                        cards = uiState.cards,
-                        onCardClick = { card ->
-                            navController.navigate("card_detail/${card.id}")
-                        },
-                        onFavoriteClick = { cardId ->
-                            viewModel.toggleFavorite(cardId)
-                        }
-                    )
-                } else {
-                    LazyColumn(
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        items(uiState.cards) { card ->
-                            CardItem(
-                                card = card,
-                                onClick = { 
-                                    // Navigate to card detail screen
+            }
+            uiState.cards.isEmpty() && uiState.isLoading -> {
+                // 首次加载显示完整的加载界面
+                LoadingScreen()
+            }
+            else -> {
+                // 显示卡片列表，如果在刷新则显示顶部加载指示器
+                Column {
+                    if (uiState.isLoading && uiState.cards.isNotEmpty()) {
+                        LinearProgressIndicator(
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                    }
+                    
+                    if (uiState.cards.isEmpty()) {
+                        EmptyState()
+                    } else {
+                        if (isGridView) {
+                            CardGrid(
+                                cards = uiState.cards,
+                                onCardClick = { card ->
                                     navController.navigate("card_detail/${card.id}")
                                 },
-                                onFavoriteClick = {
-                                    viewModel.toggleFavorite(card.id)
+                                onFavoriteClick = { cardId ->
+                                    viewModel.toggleFavorite(cardId)
                                 }
                             )
+                        } else {
+                            LazyColumn(
+                                verticalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                items(uiState.cards) { card ->
+                                    CardItem(
+                                        card = card,
+                                        onClick = { 
+                                            // Navigate to card detail screen
+                                            navController.navigate("card_detail/${card.id}")
+                                        },
+                                        onFavoriteClick = {
+                                            viewModel.toggleFavorite(card.id)
+                                        }
+                                    )
+                                }
+                            }
                         }
                     }
                 }
@@ -180,6 +191,44 @@ fun CardListScreen(
             onFavoritesOnlyChange = viewModel::setShowFavoritesOnly,
             onViewModeChange = { isGridView = it },
             onClearFilters = viewModel::clearFilters
+        )
+    }
+}
+
+@Composable
+private fun LoadingScreen() {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        CircularProgressIndicator()
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(
+            text = "正在加载卡片数据...",
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+    }
+}
+
+@Composable
+private fun EmptyState() {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(
+            text = "暂无卡片数据",
+            style = MaterialTheme.typography.headlineSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = "请稍等片刻或尝试刷新",
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
 }

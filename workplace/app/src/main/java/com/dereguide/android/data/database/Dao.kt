@@ -37,9 +37,21 @@ interface CardDao {
     
     @Query("SELECT * FROM cards WHERE rarity = :rarity AND attribute = :attribute")
     suspend fun getCardsByRarityAndAttribute(rarity: Int, attribute: String): List<Card>
-    
-    @Query("UPDATE cards SET isFavorite = :isFavorite WHERE id = :cardId")
+      @Query("UPDATE cards SET isFavorite = :isFavorite WHERE id = :cardId")
     suspend fun updateFavoriteStatus(cardId: Int, isFavorite: Boolean)
+    
+    // 收藏相关方法
+    @Query("UPDATE cards SET isFavorite = CASE WHEN isFavorite = 1 THEN 0 ELSE 1 END WHERE id = :cardId")
+    suspend fun toggleFavorite(cardId: Int)
+    
+    @Query("UPDATE cards SET isFavorite = 1 WHERE id = :cardId")
+    suspend fun addToFavorites(cardId: Int)
+    
+    @Query("UPDATE cards SET isFavorite = 0 WHERE id = :cardId")
+    suspend fun removeFromFavorites(cardId: Int)
+    
+    @Query("SELECT isFavorite FROM cards WHERE id = :cardId")
+    suspend fun isFavorite(cardId: Int): Boolean
     
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCards(cards: List<Card>)

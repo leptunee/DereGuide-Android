@@ -3,6 +3,7 @@ package com.dereguide.android.ui.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.dereguide.android.data.model.Card
 import com.dereguide.android.data.repository.CardRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -31,11 +32,10 @@ class CardStatsViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, error = null) }
             
-            try {
-                combine(
+            try {                combine(
                     cardRepository.getAllCards(),
                     cardRepository.getFavoriteCards()
-                ) { allCards, favoriteCards ->
+                ) { allCards: List<Card>, favoriteCards: List<Card> ->
                     val totalCards = allCards.size
                     val favoriteCount = favoriteCards.size
                     
@@ -48,12 +48,11 @@ class CardStatsViewModel @Inject constructor(
                     val normalCards = allCards.count { it.rarity == 1 }
                     val rareCards = allCards.count { it.rarity == 2 }
                     val superRareCards = allCards.count { it.rarity == 3 }
-                    
-                    // 最高属性值统计
-                    val maxVocal = allCards.maxOfOrNull { it.vocal2 ?: it.vocal } ?: 0
-                    val maxDance = allCards.maxOfOrNull { it.dance2 ?: it.dance } ?: 0
-                    val maxVisual = allCards.maxOfOrNull { it.visual2 ?: it.visual } ?: 0
-                    val maxTotalStats = allCards.maxOfOrNull { it.maxTotalStats } ?: 0
+                      // 最高属性值统计
+                    val maxVocal = allCards.maxOfOrNull { card -> card.vocal2 ?: card.vocal } ?: 0
+                    val maxDance = allCards.maxOfOrNull { card -> card.dance2 ?: card.dance } ?: 0
+                    val maxVisual = allCards.maxOfOrNull { card -> card.visual2 ?: card.visual } ?: 0
+                    val maxTotalStats = allCards.maxOfOrNull { card -> card.maxTotalStats } ?: 0
                     
                     CardStatsUiState(
                         totalCards = totalCards,

@@ -30,14 +30,13 @@ class CardListViewModel @Inject constructor(
     private val _selectedRarity = MutableStateFlow<Int?>(null)
     private val _sortOrder = MutableStateFlow(SortOrder.DEFAULT)
     private val _showFavoritesOnly = MutableStateFlow(false)
-      
-    init {
+        init {
         Log.d(TAG, "CardListViewModel initialized")
-        loadCards()
+        // 改进的加载策略：优先显示本地数据，后台异步刷新
+        loadCardsOptimized()
         observeFilters()
     }
-    
-    private fun observeFilters() {
+      private fun observeFilters() {
         combine(
             _searchQuery,
             _selectedAttribute,
@@ -113,8 +112,7 @@ class CardListViewModel @Inject constructor(
                     isLoading = false, 
                     error = exception.message ?: "Unknown error occurred"
                 ) 
-            }
-        }.launchIn(viewModelScope)
+            }        }.launchIn(viewModelScope)
     }
 
     fun loadCards() {
@@ -125,6 +123,37 @@ class CardListViewModel @Inject constructor(
                 // Force refresh to get API data
                 cardRepository.forceRefreshCards()
                 Log.d(TAG, "Cards loaded successfully")
+            } catch (e: Exception) {
+                Log.e(TAG, "Error loading cards", e)
+                _uiState.update { 
+                    it.copy(
+                        isLoading = false, 
+                        error = e.message ?: "Unknown error occurred"
+                    ) 
+                }
+            }
+        }
+    }
+
+    /**
+     * 优化的卡片加载策略：
+     * 1. 立即显示本地缓存数据（如果有）
+     * 2. 后台异步检查是否需要刷新
+     * 3. 如果本地没有数据，则加载示例数据保证快速响应
+     */
+    private fun loadCardsOptimized() {
+        Log.d(TAG, "Loading cards with optimized strategy...")
+        viewModelScope.launch {
+            try {
+                // 先设置加载状态
+                _uiState.update { it.copy(isLoading = true, error = null) }
+                
+                // 优先使用智能刷新策略，避免每次都强制清空数据库
+                cardRepository.smartRefreshCards()
+                
+                // 加载完成，移除加载状态
+                _uiState.update { it.copy(isLoading = false) }
+                Log.d(TAG, "Cards loaded successfully with optimized strategy")
             } catch (e: Exception) {
                 Log.e(TAG, "Error loading cards", e)
                 _uiState.update { 

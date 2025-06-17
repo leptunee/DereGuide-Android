@@ -47,13 +47,9 @@ fun DereGuideApp() {
     val navController = rememberNavController()
     
     Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        topBar = {
-            TopAppBar(
-                title = { Text("DereGuide") }
-            )
-        }
-    ) { innerPadding ->        NavHost(
+        modifier = Modifier.fillMaxSize()
+    ) { innerPadding ->
+        NavHost(
             navController = navController,
             startDestination = "cards",
             modifier = Modifier.padding(innerPadding)
