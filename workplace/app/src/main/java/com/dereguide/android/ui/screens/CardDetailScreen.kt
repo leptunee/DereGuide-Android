@@ -12,11 +12,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.dereguide.android.R
 import com.dereguide.android.data.model.Card
 import com.dereguide.android.ui.viewmodel.CardDetailViewModel
 
@@ -79,7 +81,7 @@ fun CardDetailScreen(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
-                            text = "加载失败",
+                            text = stringResource(R.string.loading_failed),
                             style = MaterialTheme.typography.headlineSmall,
                             color = MaterialTheme.colorScheme.error
                         )
@@ -139,7 +141,7 @@ private fun CardDetailContent(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Text(
-                    text = "基本信息",
+                    text = stringResource(R.string.basic_info),
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold
                 )
@@ -162,7 +164,7 @@ private fun CardDetailContent(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
-                        text = "技能信息",
+                        text = stringResource(R.string.skill_info),
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold
                     )
@@ -186,7 +188,7 @@ private fun CardDetailContent(
                 modifier = Modifier.padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {                Text(
-                    text = "属性值",
+                    text = stringResource(R.string.attribute_values),
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold
                 )
@@ -200,7 +202,7 @@ private fun CardDetailContent(
                 // 显示属性分布
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "属性分布",
+                    text = stringResource(R.string.attribute_distribution),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold
                 )

@@ -15,6 +15,13 @@
     <string name="search_characters">Search characters…</string>
     <string name="filters">Filters</string>
     <string name="all">All</string>
+    <string name="filter_and_sort">Filter and Sort</string>
+    <string name="view_mode">View Mode</string>
+    <string name="show_favorites_only">Show Favorites Only</string>
+    <string name="attribute">Attribute</string>
+    <string name="rarity">Rarity</string>
+    <string name="sort_by">Sort By</string>
+    <string name="active_filters">Active Filters:</string>
     
     <!-- Attributes -->
     <string name="cute">Cute</string>
@@ -24,10 +31,17 @@
     <!-- Common -->
     <string name="retry">Retry</string>
     <string name="loading">Loading…</string>
+    <string name="loading_cards">Loading card data...</string>
+    <string name="loading_failed">Loading Failed</string>
     <string name="error_network">Network error occurred</string>
     <string name="error_unknown">Unknown error occurred</string>
+    <string name="no_data">No Data</string>
+    <string name="no_cards">No card data available</string>
+    <string name="please_wait_or_refresh">Please wait a moment or try refreshing</string>
+    <string name="total_value">Total:</string>
     
     <!-- Card Details -->
+    <string name="card_library">Card Library</string>
     <string name="card_vocal">Vocal</string>
     <string name="card_dance">Dance</string>
     <string name="card_visual">Visual</string>
@@ -35,6 +49,10 @@
     <string name="card_center_skill">Center Skill</string>
     <string name="card_max_level">Max Level</string>
     <string name="card_evolution">Evolution</string>
+    <string name="basic_info">Basic Information</string>
+    <string name="skill_info">Skill Information</string>
+    <string name="attribute_values">Attribute Values</string>
+    <string name="attribute_distribution">Attribute Distribution</string>
     
     <!-- Character Details -->
     <string name="character_age">Age</string>
@@ -78,6 +96,26 @@
     <string name="gacha_10_pull">10 Pull</string>
     <string name="gacha_single_pull">Single Pull</string>
     
+    <!-- Favorites -->
+    <string name="favorites">Favorites</string>
+    <string name="no_favorites">No favorite cards yet</string>
+    <string name="favorites_hint">Tap the heart icon in the card list to favorite cards you like!</string>
+    
+    <!-- Statistics -->
+    <string name="statistics">Statistics</string>
+    <string name="total_cards">Total Cards</string>
+    <string name="favorite_cards">Favorite Cards</string>
+    <string name="cute_cards">Cute Cards</string>
+    <string name="cool_cards">Cool Cards</string>
+    <string name="passion_cards">Passion Cards</string>
+    <string name="normal_cards">Normal Cards</string>
+    <string name="rare_cards">Rare Cards</string>
+    <string name="super_rare_cards">Super Rare Cards</string>
+    <string name="max_vocal">Max Vocal</string>
+    <string name="max_dance">Max Dance</string>
+    <string name="max_visual">Max Visual</string>
+    <string name="max_total_stats">Max Total Stats</string>
+    
     <!-- Settings -->
     <string name="settings">Settings</string>
     <string name="notifications">Notifications</string>
@@ -86,4 +124,43 @@
     <string name="language">Language</string>
     <string name="about">About</string>
     <string name="version">Version</string>
+    
+    <!-- Common Actions -->
+    <string name="refresh">Refresh</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="add">Add</string>
+    <string name="remove">Remove</string>
+    <string name="close">Close</string>
+      <!-- Time and Date -->
+    <string name="today">Today</string>
+    <string name="yesterday">Yesterday</string>
+    <string name="tomorrow">Tomorrow</string>
+    <string name="this_week">This Week</string>
+    <string name="last_week">Last Week</string>
+    <string name="next_week">Next Week</string>
+    <string name="this_month">This Month</string>
+    <string name="last_month">Last Month</string>
+    <string name="next_month">Next Month</string>
+    
+    <!-- Language Settings -->
+    <string name="follow_system">Follow System</string>
+    <string name="language_english">English</string>
+    <string name="language_chinese">中文</string>
+    <string name="language_japanese">日本語</string>
+    
+    <!-- Sort Options -->
+    <string name="sort_by_id">ID</string>
+    <string name="sort_by_name">Name</string>
+    <string name="sort_by_rarity">Rarity</string>
+    <string name="sort_by_attribute">Attribute</string>
+    <string name="sort_by_total_stats">Total Stats</string>
+    <string name="sort_by_vocal">Vocal</string>
+    <string name="sort_by_dance">Dance</string>
+    <string name="sort_by_visual">Visual</string>
+    <string name="sort_ascending">Ascending</string>
+    <string name="sort_descending">Descending</string>
 </resources>

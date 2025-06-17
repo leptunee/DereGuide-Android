@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DereGuide</string>
+    
+    <!-- Navigation -->
+    <string name="nav_cards">卡片</string>
+    <string name="nav_songs">歌曲</string>
+    <string name="nav_characters">角色</string>
+    <string name="nav_team">队伍</string>
+    <string name="nav_more">更多</string>
+    
+    <!-- Search and Filter -->
+    <string name="search_cards">搜索卡片…</string>
+    <string name="search_songs">搜索歌曲…</string>
+    <string name="search_characters">搜索角色…</string>
+    <string name="filters">筛选器</string>
+    <string name="all">全部</string>
+    <string name="filter_and_sort">筛选和排序</string>
+    <string name="view_mode">视图模式</string>
+    <string name="show_favorites_only">只显示收藏</string>
+    <string name="attribute">属性</string>
+    <string name="rarity">稀有度</string>
+    <string name="sort_by">排序方式</string>
+    <string name="active_filters">活跃筛选:</string>
+    
+    <!-- Attributes -->
+    <string name="cute">可爱</string>
+    <string name="cool">酷炫</string>
+    <string name="passion">激情</string>
+    
+    <!-- Common -->
+    <string name="retry">重试</string>
+    <string name="loading">加载中…</string>
+    <string name="loading_cards">正在加载卡片数据...</string>
+    <string name="loading_failed">加载失败</string>
+    <string name="error_network">网络错误</string>
+    <string name="error_unknown">未知错误</string>
+    <string name="no_data">暂无数据</string>
+    <string name="no_cards">暂无卡片数据</string>
+    <string name="please_wait_or_refresh">请稍等片刻或尝试刷新</string>
+    <string name="total_value">总值:</string>
+    
+    <!-- Card Details -->
+    <string name="card_library">卡片库</string>
+    <string name="card_vocal">声音</string>
+    <string name="card_dance">舞蹈</string>
+    <string name="card_visual">视觉</string>
+    <string name="card_skill">技能</string>
+    <string name="card_center_skill">中心技能</string>
+    <string name="card_max_level">最大等级</string>
+    <string name="card_evolution">进化</string>
+    <string name="basic_info">基本信息</string>
+    <string name="skill_info">技能信息</string>
+    <string name="attribute_values">属性值</string>
+    <string name="attribute_distribution">属性分布</string>
+    
+    <!-- Character Details -->
+    <string name="character_age">年龄</string>
+    <string name="character_birthday">生日</string>
+    <string name="character_height">身高</string>
+    <string name="character_weight">体重</string>
+    <string name="character_hometown">家乡</string>
+    <string name="character_hobby">爱好</string>
+    <string name="character_cv">声优</string>
+    
+    <!-- Songs -->
+    <string name="song_artist">艺术家</string>
+    <string name="song_composer">作曲家</string>
+    <string name="song_bpm">BPM</string>
+    <string name="song_duration">时长</string>
+    <string name="difficulty_debut">出道</string>
+    <string name="difficulty_regular">常规</string>
+    <string name="difficulty_pro">专业</string>
+    <string name="difficulty_master">大师</string>
+    <string name="difficulty_master_plus">大师+</string>
+    
+    <!-- Teams -->
+    <string name="team_name">队伍名称</string>
+    <string name="team_leader">队长</string>
+    <string name="team_guest">客人</string>
+    <string name="team_total_power">总战力</string>
+    <string name="save_team">保存队伍</string>
+    <string name="delete_team">删除队伍</string>
+    
+    <!-- Events -->
+    <string name="event_current">当前活动</string>
+    <string name="event_upcoming">即将到来的活动</string>
+    <string name="event_past">过往活动</string>
+    <string name="event_rewards">奖励</string>
+    <string name="event_ranking">排名</string>
+    
+    <!-- Gacha -->
+    <string name="gacha_current">当前扭蛋</string>
+    <string name="gacha_simulator">扭蛋模拟器</string>
+    <string name="gacha_rates">概率</string>
+    <string name="gacha_10_pull">十连抽</string>
+    <string name="gacha_single_pull">单抽</string>
+    
+    <!-- Favorites -->
+    <string name="favorites">收藏</string>
+    <string name="no_favorites">还没有收藏的卡片</string>
+    <string name="favorites_hint">在卡片列表中点击爱心来收藏你喜欢的卡片吧！</string>
+    
+    <!-- Statistics -->
+    <string name="statistics">统计</string>
+    <string name="total_cards">总卡片数</string>
+    <string name="favorite_cards">收藏卡片数</string>
+    <string name="cute_cards">可爱卡片</string>
+    <string name="cool_cards">酷炫卡片</string>
+    <string name="passion_cards">激情卡片</string>
+    <string name="normal_cards">普通卡片</string>
+    <string name="rare_cards">稀有卡片</string>
+    <string name="super_rare_cards">超稀有卡片</string>
+    <string name="max_vocal">最高声音</string>
+    <string name="max_dance">最高舞蹈</string>
+    <string name="max_visual">最高视觉</string>
+    <string name="max_total_stats">最高总属性</string>
+    
+    <!-- Settings -->
+    <string name="settings">设置</string>
+    <string name="notifications">通知</string>
+    <string name="birthday_reminders">生日提醒</string>
+    <string name="theme">主题</string>
+    <string name="language">语言</string>
+    <string name="about">关于</string>
+    <string name="version">版本</string>
+    
+    <!-- Common Actions -->
+    <string name="refresh">刷新</string>
+    <string name="cancel">取消</string>
+    <string name="confirm">确认</string>
+    <string name="save">保存</string>
+    <string name="delete">删除</string>
+    <string name="edit">编辑</string>
+    <string name="add">添加</string>
+    <string name="remove">移除</string>
+    <string name="close">关闭</string>
+      <!-- Time and Date -->
+    <string name="today">今天</string>
+    <string name="yesterday">昨天</string>
+    <string name="tomorrow">明天</string>
+    <string name="this_week">本周</string>
+    <string name="last_week">上周</string>
+    <string name="next_week">下周</string>
+    <string name="this_month">本月</string>
+    <string name="last_month">上月</string>
+    <string name="next_month">下月</string>
+    
+    <!-- Language Settings -->
+    <string name="follow_system">跟随系统</string>
+    <string name="language_english">英语</string>
+    <string name="language_chinese">中文</string>
+    <string name="language_japanese">日语</string>
+    
+    <!-- Sort Options -->
+    <string name="sort_by_id">ID</string>
+    <string name="sort_by_name">名称</string>
+    <string name="sort_by_rarity">稀有度</string>
+    <string name="sort_by_attribute">属性</string>
+    <string name="sort_by_total_stats">总属性</string>
+    <string name="sort_by_vocal">声音</string>
+    <string name="sort_by_dance">舞蹈</string>
+    <string name="sort_by_visual">视觉</string>
+    <string name="sort_ascending">升序</string>
+    <string name="sort_descending">降序</string>
+</resources>

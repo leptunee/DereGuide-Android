@@ -61,15 +61,23 @@ class PreferencesManager @Inject constructor(
         sharedPreferences.edit()
             .putBoolean(KEY_AUTO_REFRESH_ENABLED, enabled)
             .apply()
-    }
-
-    fun getCacheExpiryHours(): Int {
+    }    fun getCacheExpiryHours(): Int {
         return sharedPreferences.getInt(KEY_CACHE_EXPIRY_HOURS, 24)
     }
 
     fun setCacheExpiryHours(hours: Int) {
         sharedPreferences.edit()
             .putInt(KEY_CACHE_EXPIRY_HOURS, hours)
+            .apply()
+    }
+
+    fun getString(key: String, defaultValue: String): String {
+        return sharedPreferences.getString(key, defaultValue) ?: defaultValue
+    }
+
+    fun setString(key: String, value: String) {
+        sharedPreferences.edit()
+            .putString(key, value)
             .apply()
     }
 

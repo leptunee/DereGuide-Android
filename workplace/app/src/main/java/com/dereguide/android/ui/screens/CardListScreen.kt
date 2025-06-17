@@ -43,7 +43,7 @@ fun CardListScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "卡片库",
+                text = stringResource(R.string.card_library),
                 style = MaterialTheme.typography.headlineMedium
             )
             
@@ -87,7 +87,7 @@ fun CardListScreen(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
-                        text = "活跃筛选:",
+                        text = stringResource(R.string.active_filters),
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.onPrimaryContainer
                     )
@@ -205,7 +205,7 @@ private fun LoadingScreen() {
         CircularProgressIndicator()
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "正在加载卡片数据...",
+            text = stringResource(R.string.loading_cards),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
@@ -220,13 +220,13 @@ private fun EmptyState() {
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "暂无卡片数据",
+            text = stringResource(R.string.no_cards),
             style = MaterialTheme.typography.headlineSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = "请稍等片刻或尝试刷新",
+            text = stringResource(R.string.please_wait_or_refresh),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )

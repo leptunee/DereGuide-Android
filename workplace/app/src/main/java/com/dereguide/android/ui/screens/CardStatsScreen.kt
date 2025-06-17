@@ -9,10 +9,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.dereguide.android.R
 import com.dereguide.android.ui.viewmodel.CardStatsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -57,7 +59,7 @@ fun CardStatsScreen(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
-                            text = "加载失败",
+                            text = stringResource(R.string.loading_failed),
                             style = MaterialTheme.typography.headlineSmall,
                             color = MaterialTheme.colorScheme.error
                         )

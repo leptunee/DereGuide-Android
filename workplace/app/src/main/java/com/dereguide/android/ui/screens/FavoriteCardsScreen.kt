@@ -11,9 +11,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.dereguide.android.R
 import com.dereguide.android.ui.components.CardGrid
 import com.dereguide.android.ui.components.CardItem
 import com.dereguide.android.ui.viewmodel.FavoriteCardsViewModel
@@ -118,12 +120,12 @@ private fun EmptyFavoritesMessage() {
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "还没有收藏的卡片",
+            text = stringResource(R.string.no_favorites),
             style = MaterialTheme.typography.headlineSmall
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = "在卡片列表中点击爱心来收藏你喜欢的卡片吧！",
+            text = stringResource(R.string.favorites_hint),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )

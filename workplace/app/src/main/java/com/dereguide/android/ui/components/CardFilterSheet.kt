@@ -51,7 +51,7 @@ fun CardFilterSheet(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "筛选和排序",
+                        text = stringResource(R.string.filter_and_sort),
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold
                     )
@@ -77,7 +77,7 @@ fun CardFilterSheet(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "视图模式",
+                        text = stringResource(R.string.view_mode),
                         style = MaterialTheme.typography.bodyLarge
                     )
                     Row(
@@ -103,7 +103,7 @@ fun CardFilterSheet(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "只显示收藏",
+                        text = stringResource(R.string.show_favorites_only),
                         style = MaterialTheme.typography.bodyLarge
                     )
                     Switch(
@@ -114,7 +114,7 @@ fun CardFilterSheet(
                   // 属性筛选
                 Column {
                     Text(
-                        text = "属性",
+                        text = stringResource(R.string.attribute),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold
                     )
@@ -147,7 +147,7 @@ fun CardFilterSheet(
                   // 稀有度筛选
                 Column {
                     Text(
-                        text = "稀有度",
+                        text = stringResource(R.string.rarity),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold
                     )
@@ -174,7 +174,7 @@ fun CardFilterSheet(
                 // 排序选项
                 Column {
                     Text(
-                        text = "排序方式",
+                        text = stringResource(R.string.sort_by),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold
                     )
