@@ -23,10 +23,12 @@ fun CardFilterSheet(
     selectedRarity: Int?,
     selectedSortOrder: SortOrder,
     showFavoritesOnly: Boolean,
+    isGridView: Boolean,
     onAttributeChange: (String?) -> Unit,
     onRarityChange: (Int?) -> Unit,
     onSortOrderChange: (SortOrder) -> Unit,
     onFavoritesOnlyChange: (Boolean) -> Unit,
+    onViewModeChange: (Boolean) -> Unit,
     onClearFilters: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -66,8 +68,33 @@ fun CardFilterSheet(
                         Text("清除")
                     }
                 }
+                  Divider()
                 
-                Divider()
+                // 视图模式切换
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "视图模式",
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        FilterChip(
+                            selected = !isGridView,
+                            onClick = { onViewModeChange(false) },
+                            label = { Text("列表") }
+                        )
+                        FilterChip(
+                            selected = isGridView,
+                            onClick = { onViewModeChange(true) },
+                            label = { Text("网格") }
+                        )
+                    }
+                }
                 
                 // 收藏筛选
                 Row(

@@ -4,9 +4,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.FilterList
-import androidx.compose.material.icons.filled.GridView
-import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -29,8 +26,7 @@ import com.dereguide.android.ui.viewmodel.CardListViewModel
 fun CardListScreen(
     navController: NavController,
     viewModel: CardListViewModel = hiltViewModel()
-) {
-    val uiState by viewModel.uiState.collectAsState()
+) {    val uiState by viewModel.uiState.collectAsState()
     var searchQuery by remember { mutableStateOf("") }
     var showFilterSheet by remember { mutableStateOf(false) }
     var isGridView by remember { mutableStateOf(false) }
@@ -39,44 +35,18 @@ fun CardListScreen(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
-    ) {        // Top bar with search and controls
+    ) {
+        // Header with title and refresh button
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            SearchBar(
-                query = searchQuery,
-                onQueryChange = { 
-                    searchQuery = it
-                    viewModel.searchCards(it)
-                },
-                onFilterClick = { showFilterSheet = true },
-                placeholder = stringResource(R.string.search_cards),
-                modifier = Modifier.weight(1f)
+            Text(
+                text = "卡片库",
+                style = MaterialTheme.typography.headlineMedium
             )
             
-            // View toggle button
-            IconButton(
-                onClick = { isGridView = !isGridView }
-            ) {
-                Icon(
-                    imageVector = if (isGridView) Icons.Default.List else Icons.Default.GridView,
-                    contentDescription = if (isGridView) "列表视图" else "网格视图"
-                )
-            }
-            
-            // Filter button
-            IconButton(
-                onClick = { showFilterSheet = true }
-            ) {
-                Icon(
-                    imageVector = Icons.Default.FilterList,
-                    contentDescription = "筛选"
-                )
-            }
-            
-            // Refresh button
             IconButton(
                 onClick = { viewModel.refreshCards() },
                 enabled = !uiState.isLoading
@@ -86,7 +56,21 @@ fun CardListScreen(
                     contentDescription = "刷新卡片数据"
                 )
             }
-        }        
+        }
+        
+        Spacer(modifier = Modifier.height(8.dp))
+        
+        // Search bar
+        SearchBar(
+            query = searchQuery,
+            onQueryChange = { 
+                searchQuery = it
+                viewModel.searchCards(it)
+            },
+            onFilterClick = { showFilterSheet = true },
+            placeholder = stringResource(R.string.search_cards),
+            modifier = Modifier.fillMaxWidth()
+        )
         Spacer(modifier = Modifier.height(16.dp))
         
         // Active filters indicator
@@ -181,8 +165,7 @@ fun CardListScreen(
                 }
             }
         }
-        
-        // Filter sheet
+          // Filter sheet
         CardFilterSheet(
             isVisible = showFilterSheet,
             onDismiss = { showFilterSheet = false },
@@ -190,9 +173,12 @@ fun CardListScreen(
             selectedRarity = uiState.selectedRarity,
             selectedSortOrder = uiState.sortOrder,
             showFavoritesOnly = uiState.showFavoritesOnly,
+            isGridView = isGridView,
             onAttributeChange = viewModel::filterByAttribute,
-            onRarityChange = viewModel::filterByRarity,            onSortOrderChange = viewModel::setSortOrder,
+            onRarityChange = viewModel::filterByRarity,
+            onSortOrderChange = viewModel::setSortOrder,
             onFavoritesOnlyChange = viewModel::setShowFavoritesOnly,
+            onViewModeChange = { isGridView = it },
             onClearFilters = viewModel::clearFilters
         )
     }
