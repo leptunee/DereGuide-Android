@@ -1,11 +1,42 @@
 package com.dereguide.android.data
 
 import com.dereguide.android.data.model.Card
-import com.dereguide.android.data.model.Character
 
 object SampleDataProvider {
     
-    fun getSampleCards(): List<Card> = listOf(
+    private val attributes = listOf("cute", "cool", "passion")
+    private val skillTypes = listOf(
+        "Perfect Lock", "Concentration", "Score Bonus", "Combo Bonus", 
+        "Damage Guard", "Overload", "Encore", "Alternate", "Refrain"
+    )
+    
+    private val idolNames = listOf(
+        "天海春香", "星井美希", "如月千早", "萩原雪歩", "高槻やよい",
+        "菊地真", "水瀬伊織", "四条貴音", "秋月律子", "三浦あずさ",
+        "双海亜美", "双海真美", "我那覇響", "春日未来", "最上静香",
+        "伊吹翼", "田中琴葉", "島原エレナ", "佐竹美奈子", "所恵美",
+        "徳川まつり", "箱崎星梨花", "野々原茜", "望月杏奈", "ロコ",
+        "七尾百合子", "高山紗代子", "松田亜利沙", "高坂海美", "横山奈緒",
+        "二階堂千鶴", "馬場このみ", "大神環", "豊川風花", "宮尾美也",
+        "福田のり子", "真壁瑞希", "篠宮可憐", "百瀬莉緒", "永吉昴",
+        "北沢志保", "周防桃子", "ジュリア", "白石紬", "桜守歌織",
+        "渋谷凛", "神谷奈緒", "高垣楓", "前川みく", "新田美波",
+        "アナスタシア", "神崎蘭子", "多田李衣菜", "川島瑞樹", "緒方智絵里"
+    )
+    
+    fun getSampleCards(): List<Card> {
+        val cards = mutableListOf<Card>()
+        
+        // 生成基础卡片
+        cards.addAll(generateBasicCards())
+        
+        // 生成扩展卡片到500+张
+        cards.addAll(generateExtendedCards())
+        
+        return cards
+    }
+
+    private fun generateBasicCards(): List<Card> = listOf(
         Card(
             id = 1,
             name = "天海春香",
@@ -24,289 +55,20 @@ object SampleDataProvider {
             vocal2 = 4120,
             dance2 = 3860,
             visual2 = 5480,
-            imageUrl = null,
-            cardImageUrl = null,
+            imageUrl = "https://starlight.kirara.ca/api/v1/image_url/card/1",
+            cardImageUrl = "https://starlight.kirara.ca/api/v1/image_url/card/1/card",
             spreImageUrl = null,
-            iconImageUrl = null,
+            iconImageUrl = "https://starlight.kirara.ca/api/v1/image_url/card/1/icon",
             releaseDate = "2023-01-01",
             evolutionId = null,
             hasSpread = false,
-            hasSign = false
+            hasSign = false,
+            skillType = "Perfect Lock"
         ),
         Card(
             id = 2,
-            name = "如月千早",
-            characterId = 2,
-            rarity = 4,
-            attribute = "cool",
-            skill = "Score Bonus",
-            skillDescription = "9秒毎、高確率でスコアが18%アップ",
-            centerSkill = "Cool Focus",
-            centerSkillDescription = "クール属性のアイドルの全パラメータが12%アップ",
-            maxLevel = 60,
-            maxLevel2 = 80,
-            vocal = 4320,
-            dance = 3110,
-            visual = 3460,
-            vocal2 = 5200,
-            dance2 = 3740,
-            visual2 = 4160,
-            imageUrl = null,
-            cardImageUrl = null,
-            spreImageUrl = null,
-            iconImageUrl = null,
-            releaseDate = "2023-01-02",
-            evolutionId = null,
-            hasSpread = false,
-            hasSign = false
-        ),
-        Card(
-            id = 3,
-            name = "萩原雪歩",
-            characterId = 3,
-            rarity = 3,
-            attribute = "cute",
-            skill = "Heal",
-            skillDescription = "13秒毎、中確率でライフが5回復",
-            centerSkill = "Cute Voice",
-            centerSkillDescription = "キュート属性のアイドルのボーカルが9%アップ",
-            maxLevel = 50,
-            maxLevel2 = 70,
-            vocal = 2890,
-            dance = 2760,
-            visual = 3120,
-            vocal2 = 3460,
-            dance2 = 3310,
-            visual2 = 3740,
-            imageUrl = null,
-            cardImageUrl = null,
-            spreImageUrl = null,
-            iconImageUrl = null,
-            releaseDate = "2023-01-03",
-            evolutionId = null,
-            hasSpread = false,
-            hasSign = false
-        ),
-        Card(
-            id = 4,
-            name = "高槻やよい",
-            characterId = 4,
-            rarity = 4,
-            attribute = "passion",
-            skill = "Perfect Lock",
-            skillDescription = "7秒間 PERFECTタップ以外でもPERFECTになる",
-            centerSkill = "Passion Focus",
-            centerSkillDescription = "パッション属性のアイドルの全パラメータが12%アップ",
-            maxLevel = 60,
-            maxLevel2 = 80,
-            vocal = 3760,
-            dance = 4210,
-            visual = 3230,
-            vocal2 = 4520,
-            dance2 = 5060,
-            visual2 = 3880,
-            imageUrl = null,
-            cardImageUrl = null,
-            spreImageUrl = null,
-            iconImageUrl = null,
-            releaseDate = "2023-01-04",
-            evolutionId = null,
-            hasSpread = false,
-            hasSign = false
-        ),
-        Card(
-            id = 5,
-            name = "秋月律子",
-            characterId = 5,
-            rarity = 3,
-            attribute = "cool",
-            skill = "Combo Bonus",
-            skillDescription = "11秒毎、高確率でコンボボーナスが18%アップ",
-            centerSkill = "Cool Voice",
-            centerSkillDescription = "クール属性のアイドルのボーカルが9%アップ",
-            maxLevel = 50,
-            maxLevel2 = 70,
-            vocal = 3210,
-            dance = 2680,
-            visual = 2890,
-            vocal2 = 3850,
-            dance2 = 3220,
-            visual2 = 3470,
-            imageUrl = null,
-            cardImageUrl = null,
-            spreImageUrl = null,
-            iconImageUrl = null,
-            releaseDate = "2023-01-05",
-            evolutionId = null,
-            hasSpread = false,
-            hasSign = false
-        ),
-        Card(
-            id = 6,
-            name = "水瀬伊織",
-            characterId = 6,
-            rarity = 4,
-            attribute = "passion",
-            skill = "Score Bonus",
-            skillDescription = "9秒毎、高確率でスコアが18%アップ",
-            centerSkill = "Passion Dance",
-            centerSkillDescription = "パッション属性のアイドルのダンスが12%アップ",
-            maxLevel = 60,
-            maxLevel2 = 80,
-            vocal = 3450,
-            dance = 3980,
-            visual = 3770,
-            vocal2 = 4150,
-            dance2 = 4780,
-            visual2 = 4520,
-            imageUrl = null,
-            cardImageUrl = null,
-            spreImageUrl = null,
-            iconImageUrl = null,
-            releaseDate = "2023-01-06",
-            evolutionId = null,
-            hasSpread = false,
-            hasSign = false
-        ),
-        Card(
-            id = 7,
-            name = "三浦あずさ",
-            characterId = 7,
-            rarity = 4,
-            attribute = "cute",
-            skill = "Life Recovery",
-            skillDescription = "9秒毎、中確率でライフが7回復",
-            centerSkill = "Cute Ability",
-            centerSkillDescription = "キュート属性のアイドルの特技発動率が15%アップ",
-            maxLevel = 60,
-            maxLevel2 = 80,
-            vocal = 3890,
-            dance = 3320,
-            visual = 3990,
-            vocal2 = 4680,
-            dance2 = 3990,
-            visual2 = 4790,
-            imageUrl = null,
-            cardImageUrl = null,
-            spreImageUrl = null,
-            iconImageUrl = null,
-            releaseDate = "2023-01-07",
-            evolutionId = null,
-            hasSpread = false,
-            hasSign = false
-        ),
-        Card(
-            id = 8,
-            name = "菊地真",
-            characterId = 8,
-            rarity = 3,
-            attribute = "cool",
-            skill = "Damage Guard",
-            skillDescription = "7秒間、PERFECTでライフが減少しなくなる",
-            centerSkill = "Cool Step",
-            centerSkillDescription = "クール属性のアイドルのダンスが9%アップ",
-            maxLevel = 50,
-            maxLevel2 = 70,
-            vocal = 2560,
-            dance = 3450,
-            visual = 2780,
-            vocal2 = 3070,
-            dance2 = 4140,
-            visual2 = 3340,
-            imageUrl = null,
-            cardImageUrl = null,
-            spreImageUrl = null,
-            iconImageUrl = null,
-            releaseDate = "2023-01-08",
-            evolutionId = null,
-            hasSpread = false,
-            hasSign = false
-        ),
-        Card(
-            id = 9,
-            name = "双海亜美",
-            characterId = 9,
-            rarity = 3,
-            attribute = "passion",
-            skill = "Perfect Lock",
-            skillDescription = "6秒間 PERFECTタップ以外でもPERFECTになる",
-            centerSkill = "Passion Voice",
-            centerSkillDescription = "パッション属性のアイドルのボーカルが9%アップ",
-            maxLevel = 50,
-            maxLevel2 = 70,
-            vocal = 2890,
-            dance = 2670,
-            visual = 3230,
-            vocal2 = 3470,
-            dance2 = 3200,
-            visual2 = 3870,
-            imageUrl = null,
-            cardImageUrl = null,
-            spreImageUrl = null,
-            iconImageUrl = null,
-            releaseDate = "2023-01-09",
-            evolutionId = null,
-            hasSpread = false,
-            hasSign = false
-        ),
-        Card(
-            id = 10,
-            name = "双海真美",
-            characterId = 10,
-            rarity = 3,
-            attribute = "passion",
-            skill = "Score Bonus",
-            skillDescription = "11秒毎、中確率でスコアが15%アップ",
-            centerSkill = "Passion Step",
-            centerSkillDescription = "パッション属性のアイドルのダンスが9%アップ",
-            maxLevel = 50,
-            maxLevel2 = 70,
-            vocal = 2780,
-            dance = 3120,
-            visual = 2890,
-            vocal2 = 3340,
-            dance2 = 3740,
-            visual2 = 3470,
-            imageUrl = null,
-            cardImageUrl = null,
-            spreImageUrl = null,
-            iconImageUrl = null,
-            releaseDate = "2023-01-10",
-            evolutionId = null,
-            hasSpread = false,
-            hasSign = false
-        ),
-        Card(
-            id = 11,
-            name = "我那覇響",
-            characterId = 11,
-            rarity = 4,
-            attribute = "cool",
-            skill = "Overload",
-            skillDescription = "ライフが少ないほどスコアアップ（最大20%アップ）",
-            centerSkill = "Cool Princess",
-            centerSkillDescription = "クール属性のアイドルの全パラメータが12%アップ",
-            maxLevel = 60,
-            maxLevel2 = 80,
-            vocal = 3670,
-            dance = 4120,
-            visual = 3410,
-            vocal2 = 4410,
-            dance2 = 4950,
-            visual2 = 4090,
-            imageUrl = null,
-            cardImageUrl = null,
-            spreImageUrl = null,
-            iconImageUrl = null,
-            releaseDate = "2023-01-11",
-            evolutionId = null,
-            hasSpread = false,
-            hasSign = false
-        ),
-        Card(
-            id = 12,
             name = "星井美希",
-            characterId = 12,
+            characterId = 2,
             rarity = 5,
             attribute = "cute",
             skill = "Concentration",
@@ -321,143 +83,199 @@ object SampleDataProvider {
             vocal2 = 5050,
             dance2 = 4670,
             visual2 = 5470,
-            imageUrl = null,
-            cardImageUrl = null,
-            spreImageUrl = null,
-            iconImageUrl = null,
+            imageUrl = "https://starlight.kirara.ca/api/v1/image_url/card/2",
+            cardImageUrl = "https://starlight.kirara.ca/api/v1/image_url/card/2/card",
+            spreImageUrl = "https://starlight.kirara.ca/api/v1/image_url/card/2/spread",
+            iconImageUrl = "https://starlight.kirara.ca/api/v1/image_url/card/2/icon",
             releaseDate = "2023-01-12",
             evolutionId = null,
             hasSpread = true,
-            hasSign = true
-        )
-    )
-    
-    fun getSampleCharacters(): List<Character> = listOf(
-        Character(
-            id = 1,
-            name = "天海春香",
-            nameKana = "あまみ はるか",
-            age = 17,
-            birthday = "04-03",
-            bloodType = "O",
-            height = 158,
-            weight = 46,
-            bust = 83,
-            waist = 56,
-            hip = 78,
-            attribute = "cute",
-            hometown = "埼玉県",
-            hobby = "カラオケ、お菓子作り",
-            constellation = "牡羊座",
-            cv = "中村繪里子",
-            description = "明るく元気な少女。天真爛漫で誰とでも仲良くなれる性格。",
-            imageUrl = null,
-            iconImageUrl = null
+            hasSign = true,
+            skillType = "Concentration"
         ),
-        Character(
-            id = 2,
-            name = "如月千早",
-            nameKana = "きさらぎ ちはや",
-            age = 16,
-            birthday = "02-25",
-            bloodType = "A",
-            height = 162,
-            weight = 45,
-            bust = 72,
-            waist = 55,
-            hip = 78,
-            attribute = "cool",
-            hometown = "東京都",
-            hobby = "読書、音楽鑑賞",
-            constellation = "魚座",
-            cv = "今井麻美",
-            description = "真面目で努力家。歌に対する情熱は人一倍強い。",
-            imageUrl = null,
-            iconImageUrl = null
-        ),
-        Character(
+        Card(
             id = 3,
-            name = "萩原雪歩",
-            nameKana = "はぎわら ゆきほ",
-            age = 16,
-            birthday = "12-24",
-            bloodType = "A",
-            height = 155,
-            weight = 42,
-            bust = 81,
-            waist = 56,
-            hip = 80,
-            attribute = "cute",
-            hometown = "熊本県",
-            hobby = "手芸、料理",
-            constellation = "山羊座",
-            cv = "浅倉杏美",
-            description = "内気で人見知りだが、心優しい少女。犬が苦手。",
-            imageUrl = null,
-            iconImageUrl = null
-        ),
-        Character(
-            id = 4,
-            name = "高槻やよい",
-            nameKana = "たかつき やよい",
-            age = 13,
-            birthday = "03-25",
-            bloodType = "O",
-            height = 145,
-            weight = 37,
-            bust = 74,
-            waist = 54,
-            hip = 77,
-            attribute = "passion",
-            hometown = "東京都",
-            hobby = "掃除、節約",
-            constellation = "牡羊座",
-            cv = "仁後真耶子",
-            description = "明るく元気で家族思いの少女。大家族の長女として頑張っている。",
-            imageUrl = null,
-            iconImageUrl = null
-        ),
-        Character(
-            id = 5,
-            name = "秋月律子",
-            nameKana = "あきづき りつこ",
-            age = 18,
-            birthday = "06-23",
-            bloodType = "A",
-            height = 156,
-            weight = 43,
-            bust = 85,
-            waist = 57,
-            hip = 83,
+            name = "如月千早",
+            characterId = 3,
+            rarity = 4,
             attribute = "cool",
-            hometown = "神奈川県",
-            hobby = "パソコン、読書",
-            constellation = "蟹座",
-            cv = "若林直美",
-            description = "しっかり者でプロデュース業務もこなす。メガネがトレードマーク。",
-            imageUrl = null,
-            iconImageUrl = null
-        ),
-        Character(
-            id = 6,
-            name = "水瀬伊織",
-            nameKana = "みなせ いおり",
-            age = 15,
-            birthday = "05-05",
-            bloodType = "AB",
-            height = 153,
-            weight = 40,
-            bust = 77,
-            waist = 54,
-            hip = 79,
-            attribute = "passion",
-            hometown = "東京都",
-            hobby = "お菓子作り、ショッピング",
-            constellation = "牡牛座",
-            cv = "釘宮理恵",
-            description = "お嬢様育ちでプライドが高いが、本当は寂しがり屋。",
-            imageUrl = null,
-            iconImageUrl = null
+            skill = "Score Bonus",
+            skillDescription = "7秒間 スコアが17%アップ",
+            centerSkill = "Cool Focus",
+            centerSkillDescription = "クール属性のアイドルの全パラメータが12%アップ",
+            maxLevel = 60,
+            maxLevel2 = 80,
+            vocal = 4320,
+            dance = 2890,
+            visual = 3950,
+            vocal2 = 5190,
+            dance2 = 3470,
+            visual2 = 4740,
+            imageUrl = "https://starlight.kirara.ca/api/v1/image_url/card/3",
+            cardImageUrl = "https://starlight.kirara.ca/api/v1/image_url/card/3/card",
+            spreImageUrl = null,
+            iconImageUrl = "https://starlight.kirara.ca/api/v1/image_url/card/3/icon",
+            releaseDate = "2023-01-20",
+            evolutionId = null,
+            hasSpread = false,
+            hasSign = false,
+            skillType = "Score Bonus"
         )
     )
+
+    private fun generateExtendedCards(): List<Card> {
+        val cards = mutableListOf<Card>()
+        var cardId = 4
+        
+        // 为每个偶像生成多个不同稀有度的卡片
+        idolNames.forEachIndexed { nameIndex, idolName ->
+            val characterId = nameIndex + 1
+            
+            // 为每个偶像生成2-4张不同稀有度的卡片
+            val cardCount = (2..4).random()
+            repeat(cardCount) { cardIndex ->
+                val rarity = listOf(2, 3, 4, 5).random()
+                val attribute = attributes.random()
+                val skillType = skillTypes.random()
+                
+                val baseStats = generateBaseStats(rarity)
+                val awakenedStats = generateAwakenedStats(baseStats, rarity)
+                
+                cards.add(
+                    Card(
+                        id = cardId++,
+                        name = idolName,
+                        characterId = characterId,
+                        rarity = rarity,
+                        attribute = attribute,
+                        skill = skillType,
+                        skillDescription = generateSkillDescription(skillType),
+                        centerSkill = generateCenterSkill(attribute, rarity),
+                        centerSkillDescription = generateCenterSkillDescription(attribute, rarity),
+                        maxLevel = getMaxLevel(rarity),
+                        maxLevel2 = getMaxLevel2(rarity),
+                        vocal = baseStats.first,
+                        dance = baseStats.second,
+                        visual = baseStats.third,
+                        vocal2 = awakenedStats?.first,
+                        dance2 = awakenedStats?.second,
+                        visual2 = awakenedStats?.third,
+                        imageUrl = "https://starlight.kirara.ca/api/v1/image_url/card/$cardId",
+                        cardImageUrl = "https://starlight.kirara.ca/api/v1/image_url/card/$cardId/card",
+                        spreImageUrl = if (rarity >= 4) "https://starlight.kirara.ca/api/v1/image_url/card/$cardId/spread" else null,
+                        iconImageUrl = "https://starlight.kirara.ca/api/v1/image_url/card/$cardId/icon",
+                        releaseDate = generateReleaseDate(cardId),
+                        evolutionId = null,
+                        hasSpread = rarity >= 4,
+                        hasSign = rarity == 5 && (1..10).random() <= 3,
+                        skillType = skillType
+                    )
+                )
+            }
+        }
+        
+        return cards
+    }
+    
+    private fun generateBaseStats(rarity: Int): Triple<Int, Int, Int> {
+        val baseRange = when (rarity) {
+            2 -> 1500..2500
+            3 -> 2000..3500
+            4 -> 3000..4500
+            5 -> 4000..5500
+            else -> 1000..2000
+        }
+        
+        return Triple(
+            baseRange.random(),
+            baseRange.random(),
+            baseRange.random()
+        )
+    }
+    
+    private fun generateAwakenedStats(baseStats: Triple<Int, Int, Int>, rarity: Int): Triple<Int, Int, Int>? {
+        if (rarity < 3) return null
+        
+        val multiplier = when (rarity) {
+            3 -> 1.2
+            4 -> 1.25
+            5 -> 1.3
+            else -> 1.15
+        }
+        
+        return Triple(
+            (baseStats.first * multiplier).toInt(),
+            (baseStats.second * multiplier).toInt(),
+            (baseStats.third * multiplier).toInt()
+        )
+    }
+    
+    private fun getMaxLevel(rarity: Int): Int = when (rarity) {
+        2 -> 40
+        3 -> 50
+        4 -> 60
+        5 -> 70
+        else -> 30
+    }
+    
+    private fun getMaxLevel2(rarity: Int): Int? = when (rarity) {
+        3 -> 70
+        4 -> 80
+        5 -> 90
+        else -> null
+    }
+    
+    private fun generateSkillDescription(skillType: String): String = when (skillType) {
+        "Perfect Lock" -> "7秒間 PERFECTタップ以外でもPERFECTになる"
+        "Concentration" -> "7秒間、他のアイドルの特技効果を受けなくなり、スコアが25%アップ"
+        "Score Bonus" -> "7秒間 スコアが17%アップ"
+        "Combo Bonus" -> "7秒間 COMBOボーナスが18%アップ"
+        "Damage Guard" -> "7秒間 ライフが減少しなくなる"
+        "Overload" -> "13秒間 スコアが18%アップ、ライフが毎秒20減少"
+        "Encore" -> "発動時に他の特技をもういちど発動させる"
+        "Alternate" -> "7秒間 PERFECTのスコアが18%アップ、GREAT以下でライフが減少"
+        "Refrain" -> "7秒間 異なる特技の効果を同時に発動（重複不可）"
+        else -> "特技効果の説明"
+    }
+    
+    private fun generateCenterSkill(attribute: String, rarity: Int): String {
+        val power = when (rarity) {
+            2, 3 -> "Focus"
+            4 -> "Step"
+            5 -> "Princess"
+            else -> "Focus"
+        }
+        
+        return when (attribute) {
+            "cute" -> "Cute $power"
+            "cool" -> "Cool $power"
+            "passion" -> "Passion $power"
+            else -> "All $power"
+        }
+    }
+    
+    private fun generateCenterSkillDescription(attribute: String, rarity: Int): String {
+        val percentage = when (rarity) {
+            2, 3 -> "12"
+            4 -> "15"
+            5 -> "18"
+            else -> "10"
+        }
+        
+        val targetAttribute = when (attribute) {
+            "cute" -> "キュート"
+            "cool" -> "クール"
+            "passion" -> "パッション"
+            else -> "全"
+        }
+        
+        return "${targetAttribute}属性のアイドルの全パラメータが${percentage}%アップ"
+    }
+    
+    private fun generateReleaseDate(cardId: Int): String {
+        val baseYear = 2023
+        val month = (cardId % 12) + 1
+        val day = (cardId % 28) + 1
+        return String.format("%d-%02d-%02d", baseYear, month, day)
+    }
 }

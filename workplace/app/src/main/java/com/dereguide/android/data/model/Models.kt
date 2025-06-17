@@ -149,3 +149,24 @@ data class GachaGuarantee(
     val pulls: Int,
     val guaranteedRarity: String
 ) : Parcelable
+
+// 卡片统计数据类
+@Parcelize
+data class CardStatistics(
+    val totalCount: Int,
+    val favoriteCount: Int,
+    val attributeCounts: Map<String, Int>,
+    val rarityCounts: Map<Int, Int>
+) : Parcelable
+
+// 用于数据库查询的轻量级卡片列表项（避免与ApiModels中的CardListItem冲突）
+@Parcelize
+data class CardListViewItem(
+    val id: Int,
+    val name: String,
+    val rarity: Int,
+    val attribute: String,
+    val imageUrl: String?,
+    val iconImageUrl: String?,
+    val isFavorite: Boolean = false
+) : Parcelable

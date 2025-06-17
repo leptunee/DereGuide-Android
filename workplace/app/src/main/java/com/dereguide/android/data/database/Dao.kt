@@ -54,6 +54,32 @@ interface CardDao {
     
     @Query("DELETE FROM cards")
     suspend fun deleteAllCards()
+    
+    // 分页查询
+    @Query("SELECT * FROM cards ORDER BY id DESC LIMIT :limit OFFSET :offset")
+    suspend fun getCardsPaged(offset: Int, limit: Int): List<Card>
+    
+    @Query("SELECT * FROM cards WHERE attribute = :attribute ORDER BY id DESC LIMIT :limit OFFSET :offset")
+    suspend fun getCardsPagedByAttribute(attribute: String, offset: Int, limit: Int): List<Card>
+    
+    @Query("SELECT * FROM cards WHERE rarity = :rarity ORDER BY id DESC LIMIT :limit OFFSET :offset")
+    suspend fun getCardsPagedByRarity(rarity: Int, offset: Int, limit: Int): List<Card>
+    
+    @Query("SELECT * FROM cards WHERE name LIKE '%' || :query || '%' ORDER BY id DESC LIMIT :limit OFFSET :offset")
+    suspend fun searchCardsPaged(query: String, offset: Int, limit: Int): List<Card>
+    
+    @Query("SELECT COUNT(*) FROM cards")
+    suspend fun getCardsCount(): Int
+      // 轻量级查询（仅列表显示需要的字段）
+    @Query("SELECT id, name, rarity, attribute, imageUrl, iconImageUrl, isFavorite FROM cards ORDER BY id DESC")
+    suspend fun getCardListItems(): List<CardListViewItem>
+    
+    @Query("SELECT id, name, rarity, attribute, imageUrl, iconImageUrl, isFavorite FROM cards ORDER BY id DESC LIMIT :limit OFFSET :offset")
+    suspend fun getCardListItemsPaged(offset: Int, limit: Int): List<CardListViewItem>
+    
+    // 最近更新的卡片
+    @Query("SELECT * FROM cards ORDER BY id DESC LIMIT :limit")
+    suspend fun getRecentlyUpdatedCards(limit: Int): List<Card>
 }
 
 @Dao
