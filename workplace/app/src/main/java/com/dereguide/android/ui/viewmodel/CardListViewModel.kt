@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.dereguide.android.data.model.Card
 import com.dereguide.android.data.repository.CardRepository
 import com.dereguide.android.ui.components.SortOrder
+import com.dereguide.android.utils.RarityUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -27,7 +28,7 @@ class CardListViewModel @Inject constructor(
     
     private val _searchQuery = MutableStateFlow("")
     private val _selectedAttribute = MutableStateFlow<String?>(null)
-    private val _selectedRarity = MutableStateFlow<Int?>(null)
+    private val _selectedRarityTier = MutableStateFlow<RarityUtils.RarityTier?>(null)
     private val _sortOrder = MutableStateFlow(SortOrder.DEFAULT)
     private val _showFavoritesOnly = MutableStateFlow(false)
         init {
@@ -35,16 +36,15 @@ class CardListViewModel @Inject constructor(
         // 改进的加载策略：优先显示本地数据，后台异步刷新
         loadCardsOptimized()
         observeFilters()
-    }
-      private fun observeFilters() {
+    }    private fun observeFilters() {
         combine(
             _searchQuery,
             _selectedAttribute,
-            _selectedRarity,
+            _selectedRarityTier,
             _sortOrder,
             _showFavoritesOnly
-        ) { query, attribute, rarity, sortOrder, favoritesOnly ->
-            CardFilterParams(query, attribute, rarity, sortOrder, favoritesOnly)
+        ) { query, attribute, rarityTier, sortOrder, favoritesOnly ->
+            CardFilterParams(query, attribute, rarityTier, sortOrder, favoritesOnly)
         }.flatMapLatest { params ->
             val cardsFlow = if (params.favoritesOnly) {
                 cardRepository.getFavoriteCards()
@@ -69,11 +69,9 @@ class CardListViewModel @Inject constructor(
                     }
                 }
                 
-                // Apply rarity filter
-                params.rarity?.let { rar ->
-                    filteredCards = filteredCards.filter { card ->
-                        card.rarity == rar
-                    }
+                // Apply rarity tier filter
+                params.rarityTier?.let { tier ->
+                    filteredCards = RarityUtils.filterCardsByRarityTier(filteredCards, tier)
                 }
                 
                 // Apply sorting
@@ -100,7 +98,7 @@ class CardListViewModel @Inject constructor(
                     isLoading = false,
                     error = null,
                     selectedAttribute = result.params.attribute,
-                    selectedRarity = result.params.rarity,
+                    selectedRarityTier = result.params.rarityTier,
                     sortOrder = result.params.sortOrder,
                     showFavoritesOnly = result.params.favoritesOnly
                 )
@@ -112,7 +110,8 @@ class CardListViewModel @Inject constructor(
                     isLoading = false, 
                     error = exception.message ?: "Unknown error occurred"
                 ) 
-            }        }.launchIn(viewModelScope)
+            }
+        }.launchIn(viewModelScope)
     }
 
     fun loadCards() {
@@ -140,16 +139,17 @@ class CardListViewModel @Inject constructor(
      * 1. 立即显示本地缓存数据（如果有）
      * 2. 后台异步检查是否需要刷新
      * 3. 如果本地没有数据，则加载示例数据保证快速响应
-     */
-    private fun loadCardsOptimized() {
+     */    private fun loadCardsOptimized() {
         Log.d(TAG, "Loading cards with optimized strategy...")
         viewModelScope.launch {
             try {
                 // 先设置加载状态
                 _uiState.update { it.copy(isLoading = true, error = null) }
                 
-                // 优先使用智能刷新策略，避免每次都强制清空数据库
-                cardRepository.smartRefreshCards()
+                // 使用智能刷新策略
+                cardRepository.smartRefreshCards().collect { cards ->
+                    Log.d(TAG, "Smart refresh collected ${cards.size} cards")
+                }
                 
                 // 加载完成，移除加载状态
                 _uiState.update { it.copy(isLoading = false) }
@@ -164,14 +164,20 @@ class CardListViewModel @Inject constructor(
                 }
             }
         }
-    }
-
-    fun refreshCards() {
+    }    fun refreshCards() {
         Log.d(TAG, "Refreshing cards...")
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, error = null) }
             try {
-                cardRepository.forceRefreshCards()
+                val result = cardRepository.forceRefreshCards()
+                if (result.isFailure) {
+                    _uiState.update { 
+                        it.copy(
+                            isLoading = false, 
+                            error = result.exceptionOrNull()?.message ?: "刷新失败"
+                        ) 
+                    }
+                }
                 Log.d(TAG, "Cards refreshed successfully")
             } catch (e: Exception) {
                 Log.e(TAG, "Error refreshing cards", e)
@@ -185,16 +191,53 @@ class CardListViewModel @Inject constructor(
         }
     }
     
+    /**
+     * 重置数据库数据（用于测试）
+     */
+    fun resetData() {
+        Log.d(TAG, "Resetting data...")
+        viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true, error = null) }
+            try {
+                val result = cardRepository.resetWithSampleData()
+                if (result.isSuccess) {
+                    Log.d(TAG, "Data reset successfully")
+                } else {
+                    Log.e(TAG, "Data reset failed: ${result.exceptionOrNull()?.message}")
+                    _uiState.update { 
+                        it.copy(
+                            isLoading = false, 
+                            error = "重置数据失败: ${result.exceptionOrNull()?.message}"
+                        ) 
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Error resetting data", e)
+                _uiState.update { 
+                    it.copy(
+                        isLoading = false, 
+                        error = e.message ?: "重置数据时发生未知错误"
+                    ) 
+                }
+            }
+        }
+    }
+
     fun searchCards(query: String) {
         _searchQuery.value = query
     }
-    
-    fun filterByAttribute(attribute: String?) {
+      fun filterByAttribute(attribute: String?) {
         _selectedAttribute.value = attribute
     }
     
+    fun filterByRarityTier(rarityTier: RarityUtils.RarityTier?) {
+        _selectedRarityTier.value = rarityTier
+    }
+    
+    // 保留旧方法以兼容现有代码
     fun filterByRarity(rarity: Int?) {
-        _selectedRarity.value = rarity
+        val rarityTier = rarity?.let { RarityUtils.getRarityTier(it) }
+        _selectedRarityTier.value = rarityTier
     }
     
     fun setSortOrder(sortOrder: SortOrder) {
@@ -204,10 +247,9 @@ class CardListViewModel @Inject constructor(
     fun setShowFavoritesOnly(showFavoritesOnly: Boolean) {
         _showFavoritesOnly.value = showFavoritesOnly
     }
-    
-    fun clearFilters() {
+      fun clearFilters() {
         _selectedAttribute.value = null
-        _selectedRarity.value = null
+        _selectedRarityTier.value = null
         _sortOrder.value = SortOrder.DEFAULT
         _showFavoritesOnly.value = false
         _searchQuery.value = ""
@@ -229,7 +271,7 @@ data class CardListUiState(
     val isLoading: Boolean = false,
     val error: String? = null,
     val selectedAttribute: String? = null,
-    val selectedRarity: Int? = null,
+    val selectedRarityTier: RarityUtils.RarityTier? = null,
     val sortOrder: SortOrder = SortOrder.DEFAULT,
     val showFavoritesOnly: Boolean = false
 )
@@ -237,7 +279,7 @@ data class CardListUiState(
 private data class CardFilterParams(
     val query: String,
     val attribute: String?,
-    val rarity: Int?,
+    val rarityTier: RarityUtils.RarityTier?,
     val sortOrder: SortOrder,
     val favoritesOnly: Boolean
 )

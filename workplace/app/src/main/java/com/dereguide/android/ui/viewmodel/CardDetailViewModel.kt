@@ -18,17 +18,24 @@ class CardDetailViewModel @Inject constructor(
     companion object {
         private const val TAG = "CardDetailViewModel"
     }
-    
-    private val _uiState = MutableStateFlow(CardDetailUiState())
+      private val _uiState = MutableStateFlow(CardDetailUiState())
     val uiState: StateFlow<CardDetailUiState> = _uiState.asStateFlow()
-    
-    fun loadCard(cardId: Int) {
+      fun loadCard(cardId: Int) {
         Log.d(TAG, "Loading card with ID: $cardId")
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, error = null) }
             try {
                 val card = cardRepository.getCardById(cardId)
                 if (card != null) {
+                    // 详细的技能信息调试日志
+                    Log.d(TAG, "Card loaded successfully: ${card.name}")
+                    Log.d(TAG, "Card rarity: ${card.rarity}")
+                    Log.d(TAG, "Card skill: '${card.skill ?: "NULL"}'")
+                    Log.d(TAG, "Card skillDescription: '${card.skillDescription ?: "NULL"}'")
+                    Log.d(TAG, "Card centerSkill: '${card.centerSkill ?: "NULL"}'")
+                    Log.d(TAG, "Card centerSkillDescription: '${card.centerSkillDescription ?: "NULL"}'")
+                    Log.d(TAG, "Card skillType: '${card.skillType ?: "NULL"}'")
+                    
                     _uiState.update { 
                         it.copy(
                             card = card,
@@ -36,7 +43,6 @@ class CardDetailViewModel @Inject constructor(
                             error = null
                         ) 
                     }
-                    Log.d(TAG, "Card loaded successfully: ${card.name}")
                 } else {
                     _uiState.update { 
                         it.copy(
@@ -53,7 +59,8 @@ class CardDetailViewModel @Inject constructor(
                         isLoading = false, 
                         error = e.message ?: "加载卡片时发生未知错误"
                     ) 
-                }            }
+                }
+            }
         }
     }
     

@@ -9,10 +9,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.dereguide.android.R
+import com.dereguide.android.utils.RarityUtils
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -20,12 +22,12 @@ fun CardFilterSheet(
     isVisible: Boolean,
     onDismiss: () -> Unit,
     selectedAttribute: String?,
-    selectedRarity: Int?,
+    selectedRarityTier: RarityUtils.RarityTier?,
     selectedSortOrder: SortOrder,
     showFavoritesOnly: Boolean,
     isGridView: Boolean,
     onAttributeChange: (String?) -> Unit,
-    onRarityChange: (Int?) -> Unit,
+    onRarityTierChange: (RarityUtils.RarityTier?) -> Unit,
     onSortOrderChange: (SortOrder) -> Unit,
     onFavoritesOnlyChange: (Boolean) -> Unit,
     onViewModeChange: (Boolean) -> Unit,
@@ -143,8 +145,7 @@ fun CardFilterSheet(
                             label = { Text("Passion") }
                         )
                     }
-                }
-                  // 稀有度筛选
+                }                // 稀有度筛选
                 Column {
                     Text(
                         text = stringResource(R.string.rarity),
@@ -153,19 +154,33 @@ fun CardFilterSheet(
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Row(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier.fillMaxWidth()
                     ) {
                         FilterChip(
-                            selected = selectedRarity == null,
-                            onClick = { onRarityChange(null) },
+                            selected = selectedRarityTier == null,
+                            onClick = { onRarityTierChange(null) },
                             label = { Text("全部") }
                         )
-                        repeat(3) { index ->
-                            val rarity = index + 1
+                        
+                        RarityUtils.getAllRarityTiers().forEach { tier ->
                             FilterChip(
-                                selected = selectedRarity == rarity,
-                                onClick = { onRarityChange(rarity) },
-                                label = { Text("★".repeat(rarity)) }
+                                selected = selectedRarityTier == tier,
+                                onClick = { onRarityTierChange(tier) },
+                                label = { 
+                                    Text(
+                                        text = tier.displayName,
+                                        color = if (selectedRarityTier == tier) {
+                                            MaterialTheme.colorScheme.onPrimary
+                                        } else {
+                                            Color(tier.color)
+                                        }
+                                    )
+                                },
+                                colors = FilterChipDefaults.filterChipColors(
+                                    selectedContainerColor = Color(tier.color),
+                                    selectedLabelColor = Color.White
+                                )
                             )
                         }
                     }

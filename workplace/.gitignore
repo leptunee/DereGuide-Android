@@ -180,3 +180,7 @@ generated/
 
 # Build cache
 .gradle/buildOutputCleanup/
+
+# GitHub
+.github/
+!.github/copilot-instructions.md

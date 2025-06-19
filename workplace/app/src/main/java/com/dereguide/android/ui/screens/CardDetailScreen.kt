@@ -155,29 +155,45 @@ private fun CardDetailContent(
                     }
                 }
             }
-        }
-          // Skills
-        if (!card.skill.isNullOrEmpty()) {
-            Card {
-                Column(
-                    modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    Text(
-                        text = stringResource(R.string.skill_info),
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Bold
-                    )
-                    InfoRow("技能名称", card.skill)
-                    card.skillDescription?.let { skillDesc ->
-                        InfoRow("技能效果", skillDesc)
-                    }
-                    card.centerSkill?.let { centerSkill ->
-                        InfoRow("中心技能", centerSkill)
-                    }
-                    card.centerSkillDescription?.let { centerSkillDesc ->
-                        InfoRow("中心技能效果", centerSkillDesc)
-                    }
+        }        // Skills - 显示技能信息，即使为空也显示卡片
+        Card {
+            Column(
+                modifier = Modifier.padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Text(
+                    text = stringResource(R.string.skill_info),
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold
+                )
+                
+                if (!card.skill.isNullOrEmpty()) {
+                    InfoRow(stringResource(R.string.skill_name), card.skill)
+                } else {
+                    InfoRow(stringResource(R.string.skill_name), "技能信息暂无")
+                }
+                
+                if (!card.skillDescription.isNullOrEmpty()) {
+                    InfoRow(stringResource(R.string.skill_effect), card.skillDescription)
+                } else if (!card.skill.isNullOrEmpty()) {
+                    InfoRow(stringResource(R.string.skill_effect), "技能效果详情暂无")
+                }
+                
+                if (!card.centerSkill.isNullOrEmpty()) {
+                    InfoRow(stringResource(R.string.center_skill_name), card.centerSkill)
+                } else {
+                    InfoRow(stringResource(R.string.center_skill_name), "中心技能暂无")
+                }
+                
+                if (!card.centerSkillDescription.isNullOrEmpty()) {
+                    InfoRow(stringResource(R.string.center_skill_effect), card.centerSkillDescription)
+                } else if (!card.centerSkill.isNullOrEmpty()) {
+                    InfoRow(stringResource(R.string.center_skill_effect), "中心技能效果详情暂无")
+                }
+                
+                // 显示技能类型（如果有）
+                card.skillType?.let { skillType ->
+                    InfoRow("技能类型", skillType)
                 }
             }
         }

@@ -136,10 +136,9 @@ private fun CardGridItem(
                             IconButton(
                                 onClick = onFavoriteClick,
                                 modifier = Modifier.size(24.dp)
-                            ) {
-                                Icon(
+                            ) {                                Icon(
                                     imageVector = if (card.isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                                    contentDescription = if (card.isFavorite) "取消收藏" else "收藏",
+                                    contentDescription = if (card.isFavorite) stringResource(R.string.remove_from_favorites) else stringResource(R.string.add_to_favorites),
                                     tint = if (card.isFavorite) Color.Red else Color.White,
                                     modifier = Modifier.size(16.dp)
                                 )
@@ -178,8 +177,7 @@ private fun CardGridItem(
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.height(36.dp)
                 )
-                
-                // Stats summary
+                  // Stats summary
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
@@ -193,6 +191,17 @@ private fun CardGridItem(
                         text = card.maxTotalStats.toString(),
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.Bold
+                    )
+                }
+                  // Skill display
+                if (!card.skill.isNullOrBlank()) {
+                    Text(
+                        text = card.skill ?: "",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.primary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.padding(top = 2.dp)
                     )
                 }
             }

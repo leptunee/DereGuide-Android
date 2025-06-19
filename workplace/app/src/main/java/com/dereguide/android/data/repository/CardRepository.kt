@@ -68,10 +68,30 @@ class CardRepository @Inject constructor(
             val response = apiService.getAllCards()
             if (response.isSuccessful) {
                 response.body()?.let { apiResponse ->
-                    Log.d(TAG, "API 返回  张卡片")
+                    Log.d(TAG, "API 返回 ${apiResponse.result.size} 张卡片")
                     
                     val cards = apiResponse.result.map { cardListItem ->
-                        ApiDataMapper.mapCardListItemToCard(cardListItem)
+                        val basicCard = ApiDataMapper.mapCardListItemToCard(cardListItem)
+                        
+                        // 为 SSR 和 SR 卡片获取详细技能信息
+                        if (basicCard.rarity >= 3) {
+                            try {
+                                val detailResponse = apiService.getCard(basicCard.id)
+                                if (detailResponse.isSuccessful) {
+                                    detailResponse.body()?.result?.let { cardDetail ->
+                                        ApiDataMapper.mapCardDetailToCard(cardDetail)
+                                    } ?: basicCard
+                                } else {
+                                    Log.w(TAG, "无法获取卡片 ${basicCard.id} 的详细信息")
+                                    basicCard
+                                }
+                            } catch (e: Exception) {
+                                Log.w(TAG, "获取卡片 ${basicCard.id} 详细信息时出错", e)
+                                basicCard
+                            }
+                        } else {
+                            basicCard
+                        }
                     }
                     
                     cards.chunked(BATCH_SIZE).forEach { batch ->
@@ -79,12 +99,12 @@ class CardRepository @Inject constructor(
                     }
                     
                     preferencesManager.setLastCardRefreshTime(System.currentTimeMillis())
-                    Log.d(TAG, "卡片数据插入完成，总计  张")
+                    Log.d(TAG, "卡片数据插入完成，总计 ${cards.size} 张")
                 }
                 Result.success(Unit)
             } else {
-                Log.e(TAG, "API 调用失败: ")
-                Result.failure(Exception("Failed to fetch cards: "))
+                Log.e(TAG, "API 调用失败: ${response.code()}")
+                Result.failure(Exception("Failed to fetch cards: ${response.code()}"))
             }
         } catch (e: Exception) {
             Log.e(TAG, "刷新卡片数据时出错", e)
@@ -193,6 +213,63 @@ class CardRepository @Inject constructor(
 
     suspend fun removeFromFavorites(cardId: Int) {
         cardDao.removeFromFavorites(cardId)
+    }
+
+    /**
+     * 从 API 获取卡片详细信息（包含技能数据）
+     */
+    suspend fun getCardDetailFromApi(cardId: Int): Card? {
+        return try {
+            Log.d(TAG, "Fetching card detail from API for ID: $cardId")
+            val response = apiService.getCard(cardId)
+            if (response.isSuccessful) {
+                response.body()?.result?.let { cardDetail ->
+                    ApiDataMapper.mapCardDetailToCard(cardDetail)
+                }
+            } else {
+                Log.e(TAG, "API call failed for card detail: ${response.code()}")
+                null
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error fetching card detail from API", e)
+            null
+        }
+    }
+    
+    /**
+     * 更新卡片信息到数据库
+     */
+    suspend fun updateCard(card: Card) {
+        cardDao.updateCard(card)
+    }
+
+    /**
+     * 强制重置数据库并加载新的示例数据（用于测试）
+     */
+    suspend fun resetWithSampleData(): Result<Unit> {
+        return try {
+            Log.d(TAG, "强制重置数据库并加载示例数据...")
+            
+            // 清空数据库
+            cardDao.deleteAllCards()
+            
+            // 加载示例数据
+            val sampleCards = SampleDataProvider.getSampleCards()
+            
+            sampleCards.chunked(BATCH_SIZE).forEachIndexed { index, batch ->
+                cardDao.insertCards(batch)
+                Log.d(TAG, "已插入示例数据批次 ${index + 1}: ${batch.size} 张卡片")
+            }
+            
+            // 更新刷新时间
+            preferencesManager.setLastCardRefreshTime(System.currentTimeMillis())
+            
+            Log.d(TAG, "示例数据重置完成，总计 ${sampleCards.size} 张卡片")
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Log.e(TAG, "重置示例数据时出错", e)
+            Result.failure(e)
+        }
     }
 
     suspend fun isFavorite(cardId: Int): Boolean {

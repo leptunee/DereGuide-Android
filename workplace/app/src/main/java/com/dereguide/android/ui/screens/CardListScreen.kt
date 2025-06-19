@@ -72,9 +72,8 @@ fun CardListScreen(
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(16.dp))
-        
-        // Active filters indicator
-        if (uiState.selectedAttribute != null || uiState.selectedRarity != null || uiState.showFavoritesOnly) {
+          // Active filters indicator
+        if (uiState.selectedAttribute != null || uiState.selectedRarityTier != null || uiState.showFavoritesOnly) {
             Card(
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer
@@ -106,10 +105,10 @@ fun CardListScreen(
                         )
                     }
                     
-                    uiState.selectedRarity?.let { rarity ->
+                    uiState.selectedRarityTier?.let { rarityTier ->
                         AssistChip(
                             onClick = { },
-                            label = { Text("★".repeat(rarity)) }
+                            label = { Text(rarityTier.displayName) }
                         )
                     }
                 }
@@ -175,18 +174,17 @@ fun CardListScreen(
                     }
                 }
             }
-        }
-          // Filter sheet
+        }        // Filter sheet
         CardFilterSheet(
             isVisible = showFilterSheet,
             onDismiss = { showFilterSheet = false },
             selectedAttribute = uiState.selectedAttribute,
-            selectedRarity = uiState.selectedRarity,
+            selectedRarityTier = uiState.selectedRarityTier,
             selectedSortOrder = uiState.sortOrder,
             showFavoritesOnly = uiState.showFavoritesOnly,
             isGridView = isGridView,
             onAttributeChange = viewModel::filterByAttribute,
-            onRarityChange = viewModel::filterByRarity,
+            onRarityTierChange = viewModel::filterByRarityTier,
             onSortOrderChange = viewModel::setSortOrder,
             onFavoritesOnlyChange = viewModel::setShowFavoritesOnly,
             onViewModeChange = { isGridView = it },

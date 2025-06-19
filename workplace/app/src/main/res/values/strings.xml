@@ -39,8 +39,7 @@
     <string name="no_cards">No card data available</string>
     <string name="please_wait_or_refresh">Please wait a moment or try refreshing</string>
     <string name="total_value">Total:</string>
-    
-    <!-- Card Details -->
+      <!-- Card Details -->
     <string name="card_library">Card Library</string>
     <string name="card_vocal">Vocal</string>
     <string name="card_dance">Dance</string>
@@ -51,6 +50,10 @@
     <string name="card_evolution">Evolution</string>
     <string name="basic_info">Basic Information</string>
     <string name="skill_info">Skill Information</string>
+    <string name="skill_name">Skill Name</string>
+    <string name="skill_effect">Skill Effect</string>
+    <string name="center_skill_name">Center Skill</string>
+    <string name="center_skill_effect">Center Skill Effect</string>
     <string name="attribute_values">Attribute Values</string>
     <string name="attribute_distribution">Attribute Distribution</string>
     
@@ -100,6 +103,8 @@
     <string name="favorites">Favorites</string>
     <string name="no_favorites">No favorite cards yet</string>
     <string name="favorites_hint">Tap the heart icon in the card list to favorite cards you like!</string>
+    <string name="add_to_favorites">Add to Favorites</string>
+    <string name="remove_from_favorites">Remove from Favorites</string>
     
     <!-- Statistics -->
     <string name="statistics">Statistics</string>

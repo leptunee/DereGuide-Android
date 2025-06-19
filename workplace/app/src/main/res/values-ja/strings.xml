@@ -39,8 +39,7 @@
     <string name="no_cards">カードデータがありません</string>
     <string name="please_wait_or_refresh">しばらくお待ちいただくか、リフレッシュしてください</string>
     <string name="total_value">合計:</string>
-    
-    <!-- Card Details -->
+      <!-- Card Details -->
     <string name="card_library">カードライブラリ</string>
     <string name="card_vocal">ボーカル</string>
     <string name="card_dance">ダンス</string>
@@ -51,6 +50,10 @@
     <string name="card_evolution">特訓</string>
     <string name="basic_info">基本情報</string>
     <string name="skill_info">スキル情報</string>
+    <string name="skill_name">スキル名</string>
+    <string name="skill_effect">スキル効果</string>
+    <string name="center_skill_name">センタースキル</string>
+    <string name="center_skill_effect">センタースキル効果</string>
     <string name="attribute_values">ステータス</string>
     <string name="attribute_distribution">ステータス分布</string>
     
@@ -100,6 +103,8 @@
     <string name="favorites">お気に入り</string>
     <string name="no_favorites">お気に入りのカードがありません</string>
     <string name="favorites_hint">カードリストでハートアイコンをタップしてお気に入りに追加しましょう！</string>
+    <string name="add_to_favorites">お気に入りに追加</string>
+    <string name="remove_from_favorites">お気に入りから削除</string>
     
     <!-- Statistics -->
     <string name="statistics">統計</string>

@@ -22,6 +22,7 @@ import com.dereguide.android.data.model.Card
 import com.dereguide.android.ui.theme.CoolColor
 import com.dereguide.android.ui.theme.CuteColor
 import com.dereguide.android.ui.theme.PassionColor
+import com.dereguide.android.utils.RarityUtils
 
 @Composable
 fun CardItem(
@@ -80,21 +81,38 @@ fun CardItem(
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
-                
-                // Rarity stars
-                Text(
-                    text = "★".repeat(card.rarity),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = Color(0xFFFFD700) // Gold color for stars
-                )
-                
-                // Stats
+                  // Rarity display
+                Surface(
+                    color = Color(RarityUtils.getRarityColor(card.rarity)),
+                    shape = RoundedCornerShape(4.dp)
+                ) {
+                    Text(
+                        text = RarityUtils.getRarityDisplayText(card.rarity),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                    )
+                }
+                  // Stats
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     StatChip(label = "V", value = card.vocal)
                     StatChip(label = "D", value = card.dance)
                     StatChip(label = "Vi", value = card.visual)
+                }
+                
+                // Skill info
+                if (!card.skill.isNullOrEmpty()) {
+                    Text(
+                        text = card.skill,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.primary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.padding(top = 2.dp)
+                    )
                 }
             }
               // Attribute indicator and favorite button

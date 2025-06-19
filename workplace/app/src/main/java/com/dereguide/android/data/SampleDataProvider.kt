@@ -34,9 +34,7 @@ object SampleDataProvider {
         cards.addAll(generateExtendedCards())
         
         return cards
-    }
-
-    private fun generateBasicCards(): List<Card> = listOf(
+    }    private fun generateBasicCards(): List<Card> = listOf(
         Card(
             id = 1,
             name = "天海春香",
@@ -120,6 +118,91 @@ object SampleDataProvider {
             hasSpread = false,
             hasSign = false,
             skillType = "Score Bonus"
+        ),        // 添加一个明确的5星卡片测试
+        Card(
+            id = 999,
+            name = "【测试】渋谷凛",
+            characterId = 999,
+            rarity = 5,
+            attribute = "cool",
+            skill = "Limited Perfect Lock",
+            skillDescription = "9秒間 PERFECTタップ以外でもPERFECTになり、さらにスコアが30%アップ",
+            centerSkill = "Cool Master",
+            centerSkillDescription = "クール属性のアイドルの全パラメータが18%アップし、特技発動確率が15%アップ",
+            maxLevel = 80,
+            maxLevel2 = 90,
+            vocal = 5210,
+            dance = 4890,
+            visual = 5560,
+            vocal2 = 6050,
+            dance2 = 5670,
+            visual2 = 6470,
+            imageUrl = "https://starlight.kirara.ca/api/v1/image_url/card/999",
+            cardImageUrl = "https://starlight.kirara.ca/api/v1/image_url/card/999/card",
+            spreImageUrl = "https://starlight.kirara.ca/api/v1/image_url/card/999/spread",
+            iconImageUrl = "https://starlight.kirara.ca/api/v1/image_url/card/999/icon",
+            releaseDate = "2023-12-01",
+            evolutionId = null,
+            hasSpread = true,
+            hasSign = true,
+            skillType = "Perfect Lock"
+        ),
+        // 添加一些超高稀有度测试卡片
+        Card(
+            id = 998,
+            name = "【限定SSR】新田美波",
+            characterId = 998,
+            rarity = 6,
+            attribute = "passion",
+            skill = "Ultimate Score Boost",
+            skillDescription = "11秒間 スコアが35%アップし、コンボ数に応じてさらにスコアがアップ",
+            centerSkill = "Passion Legend",
+            centerSkillDescription = "パッション属性のアイドルの全パラメータが20%アップし、特技発動確率が20%アップ",
+            maxLevel = 90,
+            maxLevel2 = 100,
+            vocal = 6210,
+            dance = 5890,
+            visual = 6560,
+            vocal2 = 7050,
+            dance2 = 6670,
+            visual2 = 7470,
+            imageUrl = "https://starlight.kirara.ca/api/v1/image_url/card/998",
+            cardImageUrl = "https://starlight.kirara.ca/api/v1/image_url/card/998/card",
+            spreImageUrl = "https://starlight.kirara.ca/api/v1/image_url/card/998/spread",
+            iconImageUrl = "https://starlight.kirara.ca/api/v1/image_url/card/998/icon",
+            releaseDate = "2024-01-01",
+            evolutionId = null,
+            hasSpread = true,
+            hasSign = true,
+            skillType = "Score Bonus"
+        ),
+        Card(
+            id = 997,
+            name = "【Fes限定】高垣楓",
+            characterId = 997,
+            rarity = 7,
+            attribute = "cool",
+            skill = "Legendary Perfect Lock",
+            skillDescription = "13秒間 PERFECTタップ以外でもPERFECTになり、さらにライフも回復する",
+            centerSkill = "Cool Goddess",
+            centerSkillDescription = "全属性のアイドルの全パラメータが22%アップし、特技発動確率が25%アップ",
+            maxLevel = 100,
+            maxLevel2 = 110,
+            vocal = 7210,
+            dance = 6890,
+            visual = 7560,
+            vocal2 = 8050,
+            dance2 = 7670,
+            visual2 = 8470,
+            imageUrl = "https://starlight.kirara.ca/api/v1/image_url/card/997",
+            cardImageUrl = "https://starlight.kirara.ca/api/v1/image_url/card/997/card",
+            spreImageUrl = "https://starlight.kirara.ca/api/v1/image_url/card/997/spread",
+            iconImageUrl = "https://starlight.kirara.ca/api/v1/image_url/card/997/icon",
+            releaseDate = "2024-06-01",
+            evolutionId = null,
+            hasSpread = true,
+            hasSign = true,
+            skillType = "Perfect Lock"
         )
     )
 

@@ -39,8 +39,7 @@
     <string name="no_cards">暂无卡片数据</string>
     <string name="please_wait_or_refresh">请稍等片刻或尝试刷新</string>
     <string name="total_value">总值:</string>
-    
-    <!-- Card Details -->
+      <!-- Card Details -->
     <string name="card_library">卡片库</string>
     <string name="card_vocal">声音</string>
     <string name="card_dance">舞蹈</string>
@@ -51,6 +50,10 @@
     <string name="card_evolution">进化</string>
     <string name="basic_info">基本信息</string>
     <string name="skill_info">技能信息</string>
+    <string name="skill_name">技能名称</string>
+    <string name="skill_effect">技能效果</string>
+    <string name="center_skill_name">中心技能</string>
+    <string name="center_skill_effect">中心技能效果</string>
     <string name="attribute_values">属性值</string>
     <string name="attribute_distribution">属性分布</string>
     
@@ -100,6 +103,8 @@
     <string name="favorites">收藏</string>
     <string name="no_favorites">还没有收藏的卡片</string>
     <string name="favorites_hint">在卡片列表中点击爱心来收藏你喜欢的卡片吧！</string>
+    <string name="add_to_favorites">收藏</string>
+    <string name="remove_from_favorites">取消收藏</string>
     
     <!-- Statistics -->
     <string name="statistics">统计</string>
